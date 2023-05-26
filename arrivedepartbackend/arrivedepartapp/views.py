@@ -6,6 +6,7 @@ import json
 from django.http import JsonResponse
 from arrivedepartbackend.settings import *
 from rest_framework.decorators import api_view
+from django.db import Error
 # Create your views here.
 
 def getUsers(request):
@@ -71,17 +72,25 @@ def registerUsers(request):
 
 
 
-# def login(request):
-#     jsond = json.loads(request.body)
-#     username = jsond.get('username')
-#     password = jsond.get('password')
-#     con = connect()
-#     cursor = con.cursor()
-#     cursor.execute(f"SELECT * FROM t_user WHERE username = '{username}' AND password = '{password}';")
-#     columns = cursor.description
-#     respRow = [{columns[index][0]:column for index,
-#                 column in enumerate(value)} for value in cursor.fetchall()]
-#     if len(respRow)  == 1 :
-#         return HttpResponse('okey')
-#     else:
-#         return HttpResponse('no')
+@api_view(['POST', 'GET', 'PUT', 'PATCH', 'DELETE'])
+def login(request):
+    if request.method == 'POST':
+        try:
+            jsond = request.data
+            username = jsond.get('username')
+            password = jsond.get('password')
+            con = connect()
+            cursor = con.cursor()
+            cursor.execute(f"SELECT * FROM t_user WHERE username = '{username}' AND password = '{password}';")
+            columns = cursor.description
+            respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
+            if len(respRow) == 1:
+                return HttpResponse('okey')
+            else:
+                return HttpResponse('no')
+            
+        except Error as e:
+            return HttpResponse(str(e), status=500)
+    else:
+        return HttpResponse('Invalid request method. Only POST requests are allowed.', status=400)
+
