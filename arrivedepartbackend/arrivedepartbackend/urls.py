@@ -18,5 +18,6 @@ from django.urls import path
 from arrivedepartapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('getuser', views.getUsers)
+    path('getuser', views.getUsers),
+    path('registeruser', views.registerUsers),
 ]
