@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
+import psycopg2,json
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'arrivedepartapp',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +126,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+def sendResponse(resultCode , resultMessege, data, action):
+    resp = {}
+    resp["resultCode"] = resultCode
+    resp["resultMessege"] = resultMessege
+    resp["data"] = data
+    resp["size"] = len(data)
+    resp["action"] = action
+    return json.dumps(resp)
+
+def connect():
+    con = psycopg2.connect(
+        dbname = 'db_arrdep',
+        user = 'uarrdep',
+        password = 'lab206',
+        host = '202.131.254.138',
+        port = '5938',
+    )
+    return con
