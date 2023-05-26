@@ -1,0 +1,34 @@
+def insertUsers(request):
+    action = 'insertUsers'
+    # print(request.body)
+    jsond = json.loads(request.body)
+    action = jsond.get('action', 'nokey')
+    lastname = jsond.get('lastname', 'nokey')
+    firstname = jsond.get('firstname', 'nokey')
+    regdug = jsond.get('regdug', 'nokey')
+    phone = jsond.get('phone', 'nokey')
+    password = jsond.get('password', 'nokey')
+    con = connect()
+    cursor = con.cursor()
+    cursor.execute(f"""INSERT INTO public.t_users(
+	 u_lastname, u_firstname, u_regdug, u_phone, u_password)
+	VALUES ('{lastname}', '{firstname}', '{regdug}', '{phone}', '{password}');""")
+    con.commit()
+    resp = sendResponse('200', 'success', '' , action)
+    return HttpResponse(resp)
+
+# ХЭРЭГЛЭГЧ НЭВТРЭХ
+def login(request):
+    jsond = json.loads(request.body)
+    username = jsond.get('phone')
+    password = jsond.get('password')
+    con = connect()
+    cursor = con.cursor()
+    cursor.execute(f"SELECT * FROM t_users WHERE u_phone = '{username}' AND u_password = '{password}';")
+    columns = cursor.description
+    respRow = [{columns[index][0]:column for index,
+                column in enumerate(value)} for value in cursor.fetchall()]
+    if len(respRow)  == 1 :
+        return HttpResponse('okey')
+    else:
+        return HttpResponse('no')
