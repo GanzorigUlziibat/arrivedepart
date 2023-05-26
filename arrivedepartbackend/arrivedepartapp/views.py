@@ -1,9 +1,11 @@
-from multiprocessing import connection
 from django.shortcuts import render
 from django.http import HttpResponse
 import psycopg2
 import json
+import json
+from django.http import JsonResponse
 from arrivedepartbackend.settings import *
+from rest_framework.decorators import api_view
 # Create your views here.
 
 def getUsers(request):
@@ -18,61 +20,64 @@ def getUsers(request):
 
     return HttpResponse(resp)
 
-import json
-from django.http import JsonResponse
 
-# def registerUsers(request):
-#     action = 'registeruser'
-#     print(request.method)
+
+
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def registerUsers(request):
+    action = 'registeruser'
+    con = connect()
+    cursor = con.cursor()
+    print(request.method)
     
-#     if request.method == 'POST':
-#         jsond = json.loads(request.body)
-#         action = jsond.get('action', 'nokey')
-#         firstname = jsond.get('firstname', 'nokey')
-#         lastname = jsond.get('lastname', 'nokey')
-#         username = jsond.get('username', 'nokey')
-#         password = jsond.get('password', 'nokey')
-#         stcode = jsond.get('stcode', 'nokey')
+    if request.method == 'POST':
+        jsond = json.loads(request.body)
+        action = jsond.get('action', 'nokey')
+        firstname = jsond.get('firstname', 'nokey')
+        lastname = jsond.get('lastname', 'nokey')
+        username = jsond.get('username', 'nokey')
+        password = jsond.get('password', 'nokey')
+        stcode = jsond.get('stcode', 'nokey')
 
-#         try:
-#             with connection.cursor() as cursor:
-#                 cursor.execute("""
-#                     INSERT INTO t_user (firstname, lastname, username, password, stcode)
-#                     VALUES (%s, %s, %s, %s, %s);
-#                 """, [firstname, lastname, username, password, stcode])
-#             resp = {
-#                 'status': '200',
-#                 'message': 'success',
-#                 'error': '',
-#                 'action': action
-#             }
-#             return JsonResponse(resp)
-#         except Exception as e:
-#             resp = {
-#                 'status': '500',
-#                 'message': 'error',
-#                 'error': str(e),
-#                 'action': action
-#             }
-#             return JsonResponse(resp)
-#     else:
-#         resp = {
-#             'status': '400',
-#             'message': 'error',
-#             'error': 'Invalid request method. Only POST requests are allowed.',
-#             'action': action
-#         }
-#         return JsonResponse(resp)
+        try:
+            cursor.execute("""
+                INSERT INTO t_user (userid, firstname, lastname, username, password, stcode)
+                VALUES (DEFAULT, %s, %s, %s, %s, %s);
+            """, [firstname, lastname, username, password, stcode])
+            resp = {
+                'status': '200',
+                'message': 'success',
+                'error': '',
+                'action': action
+            }
+            con.commit()
+            return JsonResponse(resp)
+        except Exception as e:
+            resp = {
+                'status': '500',
+                'message': 'error',
+                'error': str(e),
+                'action': action
+            }
+            return JsonResponse(resp)
+    else:
+        resp = {
+            'status': '400',
+            'message': 'error',
+            'error': 'Invalid request method. Only POST requests are allowed.',
+            'action': action
+        }
+        return JsonResponse(resp)
 
 
 
 # def login(request):
 #     jsond = json.loads(request.body)
-#     username = jsond.get('phone')
+#     username = jsond.get('username')
 #     password = jsond.get('password')
 #     con = connect()
 #     cursor = con.cursor()
-#     cursor.execute(f"SELECT * FROM t_user WHERE u_phone = '{username}' AND u_password = '{password}';")
+#     cursor.execute(f"SELECT * FROM t_user WHERE username = '{username}' AND password = '{password}';")
 #     columns = cursor.description
 #     respRow = [{columns[index][0]:column for index,
 #                 column in enumerate(value)} for value in cursor.fetchall()]
