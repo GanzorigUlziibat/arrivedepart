@@ -32,3 +32,18 @@ def login(request):
         return HttpResponse('okey')
     else:
         return HttpResponse('no')
+
+SELECT COALESCE(a1.regdate, a2.regdate) regdate
+		, a1.irsentsag
+		, a2.yavsantsag 
+FROM (
+Select date(regdate) regdate , min(regdate) irsentsag ,min(codearr) from t_arr 
+where userid = 1 and codearr = 1
+group by date(regdate)
+order by date(regdate)
+) a1 full join (
+Select date(regdate) as regdate, max(regdate) yavsantsag ,max(codearr) from t_arr 
+where userid = 1 and codearr = 2
+group by date(regdate)
+order by date(regdate)
+) a2 on a1.regdate = a2.regdate

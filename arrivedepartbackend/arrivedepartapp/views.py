@@ -7,21 +7,24 @@ from django.http import JsonResponse
 from arrivedepartbackend.settings import *
 from rest_framework.decorators import api_view
 from django.db import Error
+import datetime
 # Create your views here.
 
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def getUsers(request):
     action = 'getUsers'
+    jsond = json.loads(request.body)
+    action = jsond.get('action', 'nokey')
+    userid = jsond.get('userid', 'nokey')
     con = connect()
     cursor = con.cursor()
-    cursor.execute("SELECT * FROM t_user;")
+    cursor.execute(f"SELECT * FROM t_user WHERE t_user.userid = {userid};")
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
     resp = sendResponse('200', "success", respRow, action)
 
     return HttpResponse(resp)
-
-
 
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
@@ -71,7 +74,6 @@ def registerUsers(request):
         return JsonResponse(resp)
 
 
-
 @api_view(['POST', 'GET', 'PUT', 'PATCH', 'DELETE'])
 def login(request):
     if request.method == 'POST':
@@ -94,3 +96,84 @@ def login(request):
     else:
         return HttpResponse('Invalid request method. Only POST requests are allowed.', status=400)
 
+
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def arrdep(request):
+    action = 'arrdep'
+    con = connect()
+    cursor = con.cursor()
+    
+    if request.method == 'POST':
+        jsond = json.loads(request.body)
+        action = jsond.get('action', 'nokey')
+        userid = jsond.get('userid', 'nokey')
+        codearr = jsond.get('codearr', 'nokey')
+
+        try:
+            cursor.execute("""
+                INSERT INTO t_arr (arrid, userid, regdate, codearr)
+                VALUES (DEFAULT, %s, NOW(), %s);
+            """, [userid, codearr])
+            resp = {
+                'status': '200',
+                'message': 'success',
+                'error': '',
+                'action': action
+            }
+            con.commit()
+            resp = sendResponse('200', "success", "", action)
+            return HttpResponse(resp)
+        except Exception as e:
+            resp = {
+                'status': '500',
+                'message': 'error',
+                'error': str(e),
+                'action': action
+            }
+            return JsonResponse(resp)
+    else:
+        resp = {
+            'status': '400',
+            'message': 'error',
+            'error': 'Invalid request method. Only POST requests are allowed.',
+            'action': action
+        }
+        return JsonResponse(resp)
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.date):
+            return obj.isoformat()
+        return super().default(obj)
+
+
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def arrlist(request):
+    action = 'arrlist'
+    jsond = json.loads(request.body)
+    action = jsond.get('action', 'nokey')
+    userid = jsond.get('userid', 'nokey')
+    con = connect()
+    cursor = con.cursor()
+    cursor.execute(f"""SELECT 
+                    COALESCE(a1.regdate, a2.regdate) regdate
+                    , a1.irsentsag
+                    , a2.yavsantsag 
+                    FROM (
+                    Select date(regdate) regdate , min(regdate) irsentsag ,min(codearr) from t_arr 
+                    where userid = {userid} and codearr = 1
+                    group by date(regdate)
+                    order by date(regdate)
+                    ) a1 full join (
+                    Select date(regdate) as regdate, max(regdate) yavsantsag ,max(codearr) from t_arr 
+                    where userid = {userid} and codearr = 2
+                    group by date(regdate)
+                    order by date(regdate)
+                    ) a2 on a1.regdate = a2.regdate""")
+    columns = cursor.description
+    respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
+    resp = {'resultcode': '200', 'resultmessage': 'success', 'data': respRow, 'action': action}
+    
+    json_resp = json.dumps(resp, cls=CustomJSONEncoder)
+    return HttpResponse(json_resp, content_type='application/json')

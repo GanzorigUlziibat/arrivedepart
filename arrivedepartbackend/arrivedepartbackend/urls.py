@@ -21,4 +21,6 @@ urlpatterns = [
     path('getuser', views.getUsers),
     path('registeruser', views.registerUsers),
     path('login', views.login),
+    path('arrlist', views.arrlist),
+    path('arrdep', views.arrdep),
 ]
