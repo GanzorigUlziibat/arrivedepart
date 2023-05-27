@@ -173,10 +173,79 @@ def arrlist(request):
                     ) a2 on a1.regdate = a2.regdate""")
     columns = cursor.description
     respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultcode': '200', 'resultmessage': 'success', 'data': respRow, 'action': action}
+    resp = {'resultcode': '200', 'resultmessage': 'success', 'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
     return HttpResponse(json_resp, content_type='application/json')
 
  
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def addreport(request):
+    action = 'addreport'
+    con = connect()
+    cursor = con.cursor()
+    
+    if request.method == 'POST':
+        jsond = json.loads(request.body)
+        action = jsond.get('action', 'nokey')
+        userid = jsond.get('userid', 'nokey')
+        date = jsond.get('date', 'nokey')
+        report = jsond.get('report', 'nokey')
+
+        try:
+            cursor.execute(f"""SELECT * FROM public.t_report WHERE repdate ={date} AND userid = {userid}""")
+            columns = cursor.description
+            respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
+            if len(respRow) == 0:
+                cursor.execute("""
+                    INSERT INTO t_report (repid, report, repdate, userid)
+                    VALUES (DEFAULT, %s, NOW(), %s);
+                """, [report, userid])
+                con.commit()
+                resp = sendResponse('200', "success", "", action)
+                return HttpResponse(resp)
+            else:
+                cursor.execute("""
+                    UPDATE public.t_report
+	                SET report=%s, repdate=NOW()
+	                WHERE arrid = %s AND userid = %s;
+                """, [report, arrid, userid])
+                con.commit()
+                resp = sendResponse('200', "success", "", action)
+                return HttpResponse(resp)
+        except Exception as e:
+            resp = {
+                'status': '500',
+                'message': 'error',
+                'error': str(e),
+                'action': action
+            }
+            return JsonResponse(resp)
+    else:
+        resp = {
+            'status': '400',
+            'message': 'error',
+            'error': 'Invalid request method. Only POST requests are allowed.',
+            'action': action
+        }
+        return JsonResponse(resp)
+    
+
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def reportlist(request):
+    action = 'arrlist'
+    jsond = json.loads(request.body)
+    action = jsond.get('action', 'nokey')
+    userid = jsond.get('userid', 'nokey')
+    date = jsond.get('date', 'nokey')
+    con = connect()
+    cursor = con.cursor()
+    cursor.execute(f"""SELECT * FROM public.t_report WHERE repdate ={date}  AND userid = {userid}""")
+    columns = cursor.description
+    respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
+    resp = {'resultcode': '200', 'resultmessage': 'success', 'data': respRow, 'size': len(respRow), 'action': action}
+    # times = resp['data'][0]['irsentsag']
+    # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
+    json_resp = json.dumps(resp, cls=CustomJSONEncoder)
+    return HttpResponse(json_resp, content_type='application/json')

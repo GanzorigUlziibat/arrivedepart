@@ -23,4 +23,6 @@ urlpatterns = [
     path('login', views.login),
     path('arrlist', views.arrlist),
     path('arrdep', views.arrdep),
+    path('reportlist', views.reportlist),
+    path('addreport', views.addreport),
 ]
