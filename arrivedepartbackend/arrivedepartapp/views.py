@@ -258,7 +258,7 @@ def ShirendevTest(request):
     action = jsond.get('action', 'nokey')
     con = connect()
     cursor = con.cursor()
-    cursor.execute(f"SELECT * FROM t_user ORDER BY CustomerName ASC")
+    cursor.execute(f"SELECT * FROM t_user ORDER BY userid ASC")
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
