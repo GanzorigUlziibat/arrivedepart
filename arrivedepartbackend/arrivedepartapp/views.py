@@ -87,16 +87,18 @@ def login(request):
         username = jsond.get('username', 'nokey')
         password = jsond.get('password', 'nokey')
         try:
-            jsond = request.data
-            username = jsond.get('username')
-            password = jsond.get('password')
-            con = connect()
-            cursor = con.cursor()
-            cursor.execute(f"SELECT * FROM t_user WHERE username = '{username}' AND password = '{password}';")
+            cursor.execute("SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
             columns = cursor.description
             respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                return HttpResponse('okey')
+                resp = {
+                    'status': '200',
+                    'message': 'success',
+                    'error': '',
+                    'action': action
+                }
+                con.commit()
+                return JsonResponse(resp)
             else:
                 resp = {
                     'status': '401',
