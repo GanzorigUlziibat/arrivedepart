@@ -4,8 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/screen/Home';
 import ArrlistScreen from './src/screen/Arrlist';
 import DescScreen from './src/screen/Desc';
-import  RegisterScreen from './src/screen/Register'
-import ReportScreen from './src/screen/Report'
+import  RegisterScreen from './src/screen/Register';
+import ReportScreen from './src/screen/Report';
 
 
 

@@ -6,10 +6,12 @@ const AcceptCancelBox = () => {
 
   const handleAccept = () => {
     console.log('Accepted:', text);
+    // Perform accept logic here
   };
 
   const handleCancel = () => {
     console.log('Cancelled');
+    // Perform cancel logic here
   };
 
   return (
@@ -23,7 +25,7 @@ const AcceptCancelBox = () => {
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-          <Text style={styles.buttonText}>Save</Text>
+          <Text style={styles.buttonText}>save</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
           <Text style={styles.buttonText}>Cancel</Text>
