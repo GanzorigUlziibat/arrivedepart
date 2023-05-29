@@ -5,9 +5,7 @@ import HomeScreen from './src/screen/Home';
 import ArrlistScreen from './src/screen/Arrlist';
 import DescScreen from './src/screen/Desc';
 import  RegisterScreen from './src/screen/Register';
-import ReportScreen from './src/screen/Report';
-
-
+import  LoginScreen from './src/screen/Login';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,11 +13,11 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Home'>
-        <Stack.Screen name="Home" component={HomeScreen}/>
+        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name='Arrlist' component={ArrlistScreen} />
         <Stack.Screen name="Desc" component={DescScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Report" component={ReportScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

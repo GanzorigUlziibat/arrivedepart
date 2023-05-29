@@ -78,6 +78,7 @@ def registerUsers(request):
 def login(request):
     if request.method == 'POST':
         try:
+            action = "login"
             jsond = request.data
             username = jsond.get('username')
             password = jsond.get('password')
@@ -87,7 +88,8 @@ def login(request):
             columns = cursor.description
             respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                return HttpResponse('okey')
+                resp = sendResponse('200', "success", respRow, action)
+                return HttpResponse(resp)
             else:
                 return HttpResponse('no')
             
@@ -209,8 +211,8 @@ def addreport(request):
                 cursor.execute("""
                     UPDATE public.t_report
 	                SET report=%s, repdate=NOW()
-	                WHERE arrid = %s AND userid = %s;
-                """, [report, arrid, userid])
+	                WHERE repdate = %s AND userid = %s;
+                """, [report, date, userid])
                 con.commit()
                 resp = sendResponse('200', "success", "", action)
                 return HttpResponse(resp)
@@ -234,7 +236,7 @@ def addreport(request):
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def reportlist(request):
-    action = 'arrlist'
+    action = 'reportlist'
     jsond = json.loads(request.body)
     action = jsond.get('action', 'nokey')
     userid = jsond.get('userid', 'nokey')
@@ -249,5 +251,25 @@ def reportlist(request):
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
     return HttpResponse(json_resp, content_type='application/json')
+
+
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def passwordchange(request):
+    action = 'passwordchange'
+    try:
+        con = connect()
+        cursor = con.cursor()
+        cursor.execute(f"""UPDATE t_user SET password = substring(gen_random_uuid()::text, 1, 3)""")
+        con.commit()
+        resp = sendResponse('200', "success", "", action)
+        return HttpResponse(resp, content_type='application/json')
+    except Exception as e:
+            resp = {
+                'status': '500',
+                'message': 'error',
+                'error': str(e),
+                'action': action
+            }
+            return HttpResponse(resp)
 
 

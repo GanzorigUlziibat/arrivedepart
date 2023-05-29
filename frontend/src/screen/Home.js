@@ -6,6 +6,7 @@
     export default function App({navigation}) {
     const [displayText, setDisplayText] = useState('Initial Text');
     const [currentLocation, setCurrentLocation] = useState(null);
+
     useEffect(() => {
         getLocation();
     }, []);
@@ -65,7 +66,7 @@
             <Text style={styles.buttonText}>Ирц харах</Text>
             </Pressable>
             <Pressable style={styles.button} onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={styles.buttonText}>Register</Text>
             </Pressable>
         </View>
         </SafeAreaView>
