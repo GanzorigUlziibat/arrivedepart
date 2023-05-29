@@ -5,7 +5,7 @@
 import React, { useEffect,useState,useRef } from 'react';
 
 //import all the components we are going to use
-import { FlatList, View, Text, SafeAreaView, StyleSheet, Dimensions, Animated, } from 'react-native';
+import { FlatList, View, Text, SafeAreaView, StyleSheet, Dimensions, Animated, Pressable } from 'react-native';
 
 const dummyArray = [
   { id: '1', value: 'A' },
@@ -36,7 +36,7 @@ const dummyArray = [
   { id: '26', value: 'Z' },
 ];
 
-const App = () => {
+const App = ({navigation}) => {
   const [listItems, setListItems] = useState(dummyArray);
   const translateX = useRef(new Animated.Value(Dimensions.get("window").height)).current 
   useEffect(()=>{
@@ -47,9 +47,14 @@ const App = () => {
     return (
       // Single Comes here which will be repeatative for the FlatListItems
       <Animated.View style={{transform:[{translateY:translateX}]}} >
+        <View style={styles.buttonContainer}>
         <Text style={styles.item} onPress={() => getItem(item)}>
           {item.value}
         </Text>
+        <Pressable style={styles.button} onPress={() => navigation.navigate('Report')}>
+            <Text style={styles.buttonText}>Report</Text>
+          </Pressable>
+          </View>
       </Animated.View>
     );
   };
@@ -102,6 +107,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
+  button: {
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 20,
+    alignItems: 'flex-end',
+    width: 100,
+    height: 30,
+},
+buttonText: {
+    color: '#ffffff',
+    fontSize: 20,
+},
+buttonContainer: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+},
 });
 
 export default App;
