@@ -234,7 +234,7 @@ def addreport(request):
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def reportlist(request):
-    action = 'arrlist'
+    action = 'reportlist'
     jsond = json.loads(request.body)
     action = jsond.get('action', 'nokey')
     userid = jsond.get('userid', 'nokey')
@@ -249,5 +249,25 @@ def reportlist(request):
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
     return HttpResponse(json_resp, content_type='application/json')
+
+
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def passwordchange(request):
+    action = 'passwordchange'
+    try:
+        con = connect()
+        cursor = con.cursor()
+        cursor.execute(f"""UPDATE t_user SET password = substring(gen_random_uuid()::text, 1, 3)""")
+        con.commit()
+        resp = sendResponse('200', "success", "", action)
+        return HttpResponse(resp, content_type='application/json')
+    except Exception as e:
+            resp = {
+                'status': '500',
+                'message': 'error',
+                'error': str(e),
+                'action': action
+            }
+            return HttpResponse(resp)
 
 
