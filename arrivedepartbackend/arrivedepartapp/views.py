@@ -251,17 +251,3 @@ def reportlist(request):
     return HttpResponse(json_resp, content_type='application/json')
 
 
-@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
-def ShirendevTest(request):
-    action = 'getAllUsers'
-    jsond = json.loads(request.body)
-    action = jsond.get('action', 'nokey')
-    con = connect()
-    cursor = con.cursor()
-    cursor.execute(f"SELECT * FROM t_user ORDER BY userid ASC")
-    columns = cursor.description
-    respRow = [{columns[index][0]:column for index,
-                column in enumerate(value)} for value in cursor.fetchall()]
-    resp = sendResponse('200', "success", respRow, action)
-
-    return HttpResponse(resp)

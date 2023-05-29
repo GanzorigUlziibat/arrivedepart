@@ -25,5 +25,4 @@ urlpatterns = [
     path('arrdep', views.arrdep),
     path('reportlist', views.reportlist),
     path('addreport', views.addreport),
-    path('ShirendevTest', views.ShirendevTest),
 ]
