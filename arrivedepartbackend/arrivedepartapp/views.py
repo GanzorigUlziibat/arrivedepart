@@ -72,29 +72,59 @@ def registerUsers(request):
             'action': action
         }
         return JsonResponse(resp)
+    
 
-
-@api_view(['POST', 'GET', 'PUT', 'PATCH', 'DELETE'])
+@ api_view(['POST', 'GET', "PUT", "PATCH", "DELETE"])
 def login(request):
+    action = 'login'
+    con = connect()
+    cursor = con.cursor()
+    print(request.method)
+
     if request.method == 'POST':
+        jsond = json.loads(request.body)
+        action = jsond.get('action', 'nokey')
+        username = jsond.get('username', 'nokey')
+        password = jsond.get('password', 'nokey')
         try:
-            jsond = request.data
-            username = jsond.get('username')
-            password = jsond.get('password')
-            con = connect()
-            cursor = con.cursor()
-            cursor.execute(f"SELECT * FROM t_user WHERE username = '{username}' AND password = '{password}';")
+            cursor.execute("SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
             columns = cursor.description
             respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                return HttpResponse('okey')
+                resp = {
+                    'status': '200',
+                    'message': 'success',
+                    'error': '',
+                    'action': action
+                }
+                con.commit()
+                return JsonResponse(resp)
             else:
-                return HttpResponse('no')
+                resp = {
+                    'status': '401',
+                    'message': 'error',
+                    'error': 'Invalid username or password',
+                    'action': action
+                }
+                return JsonResponse(resp)
+
             
         except Error as e:
-            return HttpResponse(str(e), status=500)
+            resp = {
+                'status': '500',
+                'message': 'error',
+                'error': str(e),
+                'action': action
+            }
+            return JsonResponse(resp)
     else:
-        return HttpResponse('Invalid request method. Only POST requests are allowed.', status=400)
+        resp = {
+            'status': '400',
+            'message': 'error',
+            'error': 'Invalid request method. Only POST requests are allowed.',
+            'action': action
+        }
+        return JsonResponse(resp)
 
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
