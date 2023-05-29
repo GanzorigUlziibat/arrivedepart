@@ -209,8 +209,8 @@ def addreport(request):
                 cursor.execute("""
                     UPDATE public.t_report
 	                SET report=%s, repdate=NOW()
-	                WHERE arrid = %s AND userid = %s;
-                """, [report, arrid, userid])
+	                WHERE repdate = %s AND userid = %s;
+                """, [report, date, userid])
                 con.commit()
                 resp = sendResponse('200', "success", "", action)
                 return HttpResponse(resp)
