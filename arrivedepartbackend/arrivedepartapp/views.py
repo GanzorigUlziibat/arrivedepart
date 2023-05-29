@@ -91,14 +91,8 @@ def login(request):
             columns = cursor.description
             respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                resp = {
-                    'status': '200',
-                    'message': 'success',
-                    'error': '',
-                    'action': action
-                }
-                con.commit()
-                return JsonResponse(resp)
+                resp = sendResponse('200', "success", respRow, action)
+                return HttpResponse(resp)
             else:
                 resp = {
                     'status': '401',
