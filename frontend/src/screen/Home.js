@@ -2,8 +2,7 @@
     import { View, Text, Pressable, SafeAreaView,  StyleSheet } from 'react-native';
     import * as Location from 'expo-location';
     import * as geolib from 'geolib';
-
-
+    import { useNavigation } from '@react-navigation/native';
     export default function App({navigation}) {
     const [displayText, setDisplayText] = useState('Initial Text');
     const [currentLocation, setCurrentLocation] = useState(null);
@@ -29,7 +28,7 @@
 
     const handleButtonPress = (text) => {
         if (currentLocation) {
-        const officeLocation = { latitude: 7.927611, longitude: 6.889038 }; // Replace with your office location coordinates
+        const officeLocation = { latitude: 47.927613, longitude: 106.889048 }; // Replace with your office location coordinates
         const distance = geolib.getDistance(
             currentLocation.coords,
             officeLocation
@@ -63,7 +62,7 @@
             <Pressable style={styles.button} onPress={() => handleButtonPress('Depart')}>
             <Text style={styles.buttonText}>Depart</Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={() => navigation.navigate()}>
+            <Pressable style={styles.button} onPress={() => navigation.navigate('Arrlist')}>
             <Text style={styles.buttonText}>Ирц харах</Text>
             </Pressable>
         </View>
