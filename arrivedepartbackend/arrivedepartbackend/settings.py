@@ -30,7 +30,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     '192.168.0.15',
-    'arrive.mandakh.org'
+    'arrive.mandakh.org',
 ]
 
 
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'arrivedepartapp',
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
