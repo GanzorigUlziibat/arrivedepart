@@ -65,6 +65,9 @@
             <Pressable style={styles.button} onPress={() => navigation.navigate('Arrlist')}>
             <Text style={styles.buttonText}>Ирц харах</Text>
             </Pressable>
+            <Pressable style={styles.button} onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.buttonText}>Register</Text>
+            </Pressable>
         </View>
         </SafeAreaView>
     );
