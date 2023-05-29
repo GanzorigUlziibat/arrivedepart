@@ -78,6 +78,7 @@ def registerUsers(request):
 def login(request):
     if request.method == 'POST':
         try:
+            action = "login"
             jsond = request.data
             username = jsond.get('username')
             password = jsond.get('password')
@@ -87,7 +88,8 @@ def login(request):
             columns = cursor.description
             respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                return HttpResponse('okey')
+                resp = sendResponse('200', "success", respRow, action)
+                return HttpResponse(resp)
             else:
                 return HttpResponse('no')
             
