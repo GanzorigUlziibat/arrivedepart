@@ -6,6 +6,7 @@ import ArrlistScreen from './src/screen/Arrlist';
 import DescScreen from './src/screen/Desc';
 import  RegisterScreen from './src/screen/Register';
 import  LoginScreen from './src/screen/Login';
+import  ReportScreen from './src/screen/Report';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ function App() {
         <Stack.Screen name="Desc" component={DescScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Report" component={ReportScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
