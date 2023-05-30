@@ -7,13 +7,14 @@ import DescScreen from './src/screen/Desc';
 import  RegisterScreen from './src/screen/Register';
 import  LoginScreen from './src/screen/Login';
 import  ReportScreen from './src/screen/Report';
-
+import UserProvider from './src/UserProvider';
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+    <UserProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='Register'>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name='Arrlist' component={ArrlistScreen} />
         <Stack.Screen name="Desc" component={DescScreen} />
@@ -22,6 +23,7 @@ function App() {
         <Stack.Screen name="Report" component={ReportScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    </UserProvider>
   );
 }
 

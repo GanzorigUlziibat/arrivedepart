@@ -2,7 +2,7 @@
 //https://aboutreact.com/react-native-flatlist/
 
 //import React in our code
-import React, { useEffect,useState,useRef } from 'react';
+import React, { useEffect,useState,useRef,useContext } from 'react';
 
 //import all the components we are going to use
 import { FlatList, View, Text, SafeAreaView, StyleSheet, Dimensions, Animated, Pressable } from 'react-native';

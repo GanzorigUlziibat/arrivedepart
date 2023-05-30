@@ -1,12 +1,14 @@
-    import React, { useState, useEffect } from 'react';
+    import React, { useState, useEffect, useContext } from 'react';
     import { View, Text, Pressable, SafeAreaView,  StyleSheet } from 'react-native';
     import * as Location from 'expo-location';
     import * as geolib from 'geolib';
     import { useNavigation } from '@react-navigation/native';
+    import UserContext from '../UserContext';
+
     export default function App({navigation}) {
     const [displayText, setDisplayText] = useState('Initial Text');
     const [currentLocation, setCurrentLocation] = useState(null);
-
+    const { userid } = useContext(UserContext);
     useEffect(() => {
         getLocation();
     }, []);
@@ -56,6 +58,7 @@
         <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{displayText}</Text>
         <View style={styles.buttonContainer}>
+        <Text>Welcome, User {userid}!</Text>
             <Pressable style={styles.button} onPress={() => handleButtonPress('Arrive')}>
             <Text style={styles.buttonText}>Arrive</Text>
             </Pressable>
