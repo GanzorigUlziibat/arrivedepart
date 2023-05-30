@@ -189,7 +189,7 @@ def arrdep(request):
                 'action': action
             }
             con.commit()
-            resp = sendResponse('200', "success", "", action)
+            resp = sendResponse('200', "success", "амжилттай бүртгэлээ", action)
             return HttpResponse(resp)
         except Exception as e:
             resp = {
@@ -226,8 +226,10 @@ def arrlist(request):
     cursor = con.cursor()
     cursor.execute(f"""SELECT 
                     COALESCE(a1.regdate, a2.regdate) regdate
-                    , a1.irsentsag
-                    , a2.yavsantsag 
+                    --, a1.irsentsag
+                    --, a2.yavsantsag
+                    , EXTRACT(HOUR FROM a1.irsentsag) || ':' || EXTRACT(MINUTE FROM a1.irsentsag) AS irsentsag
+                    , EXTRACT(HOUR FROM a2.yavsantsag) || ':' || EXTRACT(MINUTE FROM a2.yavsantsag) AS yavsantsag
                     FROM (
                     Select date(regdate) regdate , min(regdate) irsentsag ,min(codearr) from t_arr 
                     where userid = {userid} and codearr = 1
