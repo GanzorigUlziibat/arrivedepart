@@ -6,7 +6,7 @@
     import UserContext from '../UserContext';
 
     export default function App({navigation}) {
-    const [displayText, setDisplayText] = useState('Initial Text');
+    const [displayText, setDisplayText] = useState('Цагаа бүртгүүлнэ үү');
     const [currentLocation, setCurrentLocation] = useState(null);
     const { userid, firstname } = useContext(UserContext);
     useEffect(() => {
@@ -38,19 +38,19 @@
         if (distance <= 50) {
             if (text === 'Arrive') {
             alert(distance+" m")
-            setDisplayText('You are arrive');
+            setDisplayText('Тавтай морил');
             } else if (text === 'Depart') {
             alert(distance+" m")
-            setDisplayText('You are depart');
+            setDisplayText('Баяртай');
             } else if (text === 'Button 3');
         } else {
         
-            setDisplayText('You are not here');
+            setDisplayText('Та энд байхгүй байна');
             alert(distance+" m")
         
         }
         } else {
-        setDisplayText('Location not available');
+        setDisplayText('Цагаа бүртгүүлнэ үү');
         }
     };
 
@@ -58,18 +58,18 @@
         <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{displayText}</Text>
         <View style={styles.buttonContainer}>
-        <Text>Welcome, {firstname}!</Text>
+        <Text>Тавтай Морил {firstname}!</Text>
             <Pressable style={styles.button} onPress={() => handleButtonPress('Arrive')}>
-            <Text style={styles.buttonText}>Arrive</Text>
+            <Text style={styles.buttonText}>Ирсэн</Text>
             </Pressable>
             <Pressable style={styles.button} onPress={() => handleButtonPress('Depart')}>
-            <Text style={styles.buttonText}>Depart</Text>
+            <Text style={styles.buttonText}>Явсан</Text>
             </Pressable>
             <Pressable style={styles.button} onPress={() => navigation.navigate('Arrlist')}>
             <Text style={styles.buttonText}>Ирц харах</Text>
             </Pressable>
             <Pressable style={styles.button} onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.buttonText}>Register</Text>
+            <Text style={styles.buttonText}>Нэвтрэх</Text>
             </Pressable>
         </View>
         </SafeAreaView>

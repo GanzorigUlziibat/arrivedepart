@@ -36,21 +36,21 @@ const LoginScreen = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {/* Your login form UI */}
-      <Text style={{ fontSize: 24, marginBottom: 20 }}>Register</Text>
+      <Text style={{ fontSize: 24, marginBottom: 20 }}>Нэвтрэх</Text>
       <TextInput
         style={{ width: '50%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 }}
-        placeholder="Oyutnii code"
+        placeholder="Оюутны код"
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
         style={{ width: '50%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 }}
-        placeholder="Password"
+        placeholder="Нууц үг"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <Button title="Нэвтрэх" onPress={handleLogin} />
     </View>
   );
 };
