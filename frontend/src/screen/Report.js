@@ -16,7 +16,7 @@ const AcceptCancelBox = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Enter text:</Text>
+      <Text style={styles.label}>Тайлан бичнэ үү:</Text>
       <TextInput
         multiline={true}
         style={styles.input}
@@ -25,10 +25,10 @@ const AcceptCancelBox = () => {
       />
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-          <Text style={styles.buttonText}>save</Text>
+          <Text style={styles.buttonText}>Хадгалах</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
-          <Text style={styles.buttonText}>Cancel</Text>
+          <Text style={styles.buttonText}>Болих</Text>
         </TouchableOpacity>
       </View>
     </View>
