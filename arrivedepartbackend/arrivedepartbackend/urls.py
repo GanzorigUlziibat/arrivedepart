@@ -27,4 +27,6 @@ urlpatterns = [
     path('addreport', views.addreport),
     path('passwordchange', views.passwordchange),
     path('Login', views.login),
+    path('sambuulogin', views.sambuulogin),
+    
 ]

@@ -120,6 +120,50 @@ def login(request):
         }
         return JsonResponse(resp)
 
+@ api_view(['POST', 'GET', "PUT", "PATCH", "DELETE"])    
+def sambuulogin(request):
+    action = 'sambuulogin'
+    con = connect()
+    cursor = con.cursor()
+    
+    if request.method == 'POST':
+        jsond = json.loads(request.body)
+        action = jsond.get('action', 'nokey')
+        username = jsond.get('username', 'nokey')
+        password = jsond.get('password', 'nokey')
+        try:
+            cursor.execute("SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
+            columns = cursor.description
+            respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
+            if len(respRow) == 1:
+                resp = sendResponse('200', "success", respRow, action)
+                return HttpResponse(resp)
+            else:
+                resp = {
+                    'status': '401',
+                    'message': 'error',
+                    'error': 'Invalid username or password',
+                    'action': action
+                }
+                return JsonResponse(resp)
+            
+        except Error as e:
+            resp = {
+                'status': '500',
+                'message': 'error',
+                'error': str(e),
+                'action': action
+            }
+            return JsonResponse(resp)
+    else:
+        resp = {
+            'status': '400',
+            'message': 'error',
+            'error': 'Invalid request method. Only POST requests are allowed.',
+            'action': action
+        }
+        return JsonResponse(resp)
+
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def arrdep(request):
