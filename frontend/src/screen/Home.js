@@ -71,6 +71,9 @@
             <Pressable style={styles.button} onPress={() => navigation.navigate('Register')}>
             <Text style={styles.buttonText}>Register</Text>
             </Pressable>
+            <Pressable style={styles.button} onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>Login</Text>
+            </Pressable>
         </View>
         </SafeAreaView>
     );
