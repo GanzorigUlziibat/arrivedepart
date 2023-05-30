@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const AcceptCancelBox = () => {
+const AcceptCancelBox = ({ route,  navigation}) => {
+  const { regdate } = route.params;
+
   const [text, setText] = useState('');
 
   const handleAccept = () => {
@@ -11,12 +13,13 @@ const AcceptCancelBox = () => {
 
   const handleCancel = () => {
     console.log('Cancelled');
+    navigation.goBack();
     // Perform cancel logic here
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Тайлан бичнэ үү:</Text>
+      <Text style={styles.label}>{regdate} өдрийн тайлан:</Text>
       <TextInput
         multiline={true}
         style={styles.input}
