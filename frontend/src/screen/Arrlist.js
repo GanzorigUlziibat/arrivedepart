@@ -161,7 +161,7 @@ const App = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 2 }}>
       <View style={styles.container}>
         <FlatList
           data={data}

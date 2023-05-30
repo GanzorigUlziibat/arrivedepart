@@ -14,7 +14,7 @@ function App() {
   return (
     <UserProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Register'>
+      <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name='Arrlist' component={ArrlistScreen} />
         <Stack.Screen name="Desc" component={DescScreen} />

@@ -16,12 +16,17 @@ const LoginScreen = () => {
       username: username,
       password: password,
     };
-
+  
     axios.post('http://arrive.mandakh.org/login', loginData)
       .then(response => {
-        const userid = response.data.data[0].userid;
-        updateUser(userid); // Store the userid in the context
-        navigation.navigate('Home');
+        if (response.data && response.data.data && response.data.data.length > 0) {
+          const userid = response.data.data[0].userid;
+          const firstname = response.data.data[0].firstname;
+          updateUser(userid,firstname); 
+          navigation.navigate('Home');
+        } else {
+          console.error('Invalid response format111');
+        }
       })
       .catch(error => {
         console.error(error);

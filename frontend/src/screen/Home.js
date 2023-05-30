@@ -8,7 +8,7 @@
     export default function App({navigation}) {
     const [displayText, setDisplayText] = useState('Initial Text');
     const [currentLocation, setCurrentLocation] = useState(null);
-    const { userid } = useContext(UserContext);
+    const { userid, firstname } = useContext(UserContext);
     useEffect(() => {
         getLocation();
     }, []);
@@ -58,7 +58,7 @@
         <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{displayText}</Text>
         <View style={styles.buttonContainer}>
-        <Text>Welcome, User {userid}!</Text>
+        <Text>Welcome, User {firstname}!</Text>
             <Pressable style={styles.button} onPress={() => handleButtonPress('Arrive')}>
             <Text style={styles.buttonText}>Arrive</Text>
             </Pressable>
