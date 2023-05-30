@@ -28,9 +28,10 @@ const App = ({navigation}) => {
         <Pressable style={styles.button} onPress={() => navigation.navigate('Report')}>
             <Text style={styles.buttonText}>Report</Text>
         </Pressable>
-        <Text>irsentsag: {item.irsentsag}</Text>
-        <Text>regdate: {item.regdate}</Text>
-        <Text>yavsantsag: {item.yavsantsag}</Text>
+        <Text>Ирсэн цаг: {item.irsentsag}</Text>
+        <Text>Явсан цаг: {item.yavsantsag}</Text>
+        <Text>Бүртгэсэн цаг: {item.regdate}</Text>
+
       </View>
     );
   };
