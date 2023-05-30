@@ -26,12 +26,11 @@ const App = ({navigation}) => {
     return (
       <View style={styles.item}>
         <Pressable style={styles.button} onPress={() => navigation.navigate('Report')}>
-            <Text style={styles.buttonText}>Report</Text>
+            <Text style={styles.buttonText}>Тайлан</Text>
         </Pressable>
         <Text>Ирсэн цаг: {item.irsentsag}</Text>
         <Text>Явсан цаг: {item.yavsantsag}</Text>
         <Text>Бүртгэсэн цаг: {item.regdate}</Text>
-
       </View>
     );
   };
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#007AFF',
     paddingHorizontal: 20,
-    width: 100,
+    width: 110,
 },
 buttonText: {
     color: '#ffffff',
