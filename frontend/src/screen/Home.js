@@ -58,7 +58,7 @@
         <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{displayText}</Text>
         <View style={styles.buttonContainer}>
-        <Text>Welcome, User {firstname}!</Text>
+        <Text>Welcome, {firstname}!</Text>
             <Pressable style={styles.button} onPress={() => handleButtonPress('Arrive')}>
             <Text style={styles.buttonText}>Arrive</Text>
             </Pressable>

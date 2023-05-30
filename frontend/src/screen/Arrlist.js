@@ -180,13 +180,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 10,
-    marginTop: 30,
+    marginTop: 0,
     
   },
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
+    marginTop:60,
+    
   },
   button: {
     backgroundColor: '#007AFF',
