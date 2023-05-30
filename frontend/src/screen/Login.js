@@ -39,14 +39,14 @@ const LoginScreen = () => {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 24, marginBottom: 20 }}>Login</Text>
       <TextInput
-        style={{ width: '10%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 }}
-        placeholder=""
+        style={{ width: '50%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 }}
+        placeholder="username"
         value={username}
         onChangeText={setUsername}
       />
       <TextInput
-        style={{ width: '10%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 }}
-        placeholder=""
+        style={{ width: '50%', height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, padding: 10 }}
+        placeholder="password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
