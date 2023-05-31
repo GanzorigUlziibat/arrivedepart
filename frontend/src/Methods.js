@@ -45,7 +45,7 @@ export const _retrieveData = async(key) => {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
       // We have data!!
-      console.log(value+"ret")
+      // console.log(value+"ret")
       return value;
     }
   } catch (error) {
