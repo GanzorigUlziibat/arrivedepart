@@ -1,31 +1,70 @@
-import React, { useEffect,useState,useRef,useContext } from 'react';
-import { FlatList, View, Text, SafeAreaView, StyleSheet, Dimensions, Animated, Pressable } from 'react-native';
-import UserContext from '../UserContext';
-import axios from 'axios';
-import { Table, Row, Rows } from 'react-native-table-component';
-import {AntDesign} from '@expo/vector-icons';
-
-
-
-const App = ({navigation}) => {
-  const { detail } = useContext(UserContext);
+import React, { useEffect, useState, useRef, useContext } from "react";
+import {
+  FlatList,
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  Pressable,
+} from "react-native";
+import axios from "axios";
+import { Table, Row, Rows } from "react-native-table-component";
+import { AntDesign } from "@expo/vector-icons";
+import {
+  sendRequest,
+  urlArriveService,
+  _storeData,
+  _retrieveData,
+} from "../Methods";
+const App = ({ navigation }) => {
+  // const { detail } = useContext(UserContext);
   const [data, setData] = useState([]);
+  const [userid1, setUserid1] = useState();
+  const [detail, setDetail] = useState([]);
+  useEffect(async () => {
+    let useridvalue = await _retrieveData("userid");
+    if (useridvalue == null) {
+      navigation.navigate("Login");
+    } else {
+      // console.log(useridvalue, "val");
+      setUserid1(useridvalue);
+      // console.log(userid1, "id");
+    }
+    const arrlistData = {
+      action: "arrlist",
+      // userid: useridvalue,
+      userid: 1,
+    };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = () => {
-    axios
-      .post('http://arrive.mandakh.org/arrlist', { userid: detail.userid })
-      .then(response => {
-        setData(response.data.data);
+    sendRequest(urlArriveService + "arrlist", arrlistData)
+      .then((data) => {
+        // setIsLoading(false);
+        // setDatas(data);
+        // console.log(data);
+        console.log(JSON.stringify(data), "arrlist");
+        if (data.resultCode == 200)
+        {
+          data && setDetail(data.data);
+          console.log(detail,'detail');
+        }
+        else
+        {
+          alert(data.resultMessage);
+        }
       })
-      .catch(error => {
+      .catch((error) => {
+        // setIsLoading(false);
         console.error(error);
       });
-  };
 
+    getLocation();
+  },[]);
+ 
+ 
+
+ 
   const renderItem = ({ item }) => {
     return (
       <Pressable style={styles.item} onPress={() => navigation.navigate('Report', {regdate:item.regdate})}>
@@ -58,7 +97,7 @@ const App = ({navigation}) => {
     <SafeAreaView style={{ flex: 2 }}>
       <View style={styles.container}>
         <FlatList
-          data={data}
+          data={detail}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           ListHeaderComponent={renderHeader}
