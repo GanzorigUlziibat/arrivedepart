@@ -29,6 +29,52 @@ def getUsers(request):
 
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
+def passwCheck(request):
+    action = "passwCheck"
+    con = connect()
+    cursor = con.cursor()
+    
+    if request.method == 'POST':
+        jsond = json.loads(request.body)
+        action = jsond.get("action", "nokey")
+        stcode = jsond.get("stcode", "nokey")
+        
+        try:
+            cursor.execute("SELECT userid,password FROM t_user WHERE stcode = %s", [stcode])
+            columns = cursor.description
+            respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
+            
+            if respRow:
+                resp = sendResponse('200', "Амжилттай", respRow[0], action)
+                return HttpResponse(resp)
+            else:
+                cursor.execute("SELECT userid,password FROM t_user")
+                columns = cursor.description
+                respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
+                resp = sendResponse('200', "Хэрэглэгч олдсонгүй", respRow, action)
+                return HttpResponse(resp)
+        except Exception as e:
+            resp = {
+                'status': '500',
+                'message': 'Амжилтгүй',
+                'error': str(e),
+                'action': action
+            }
+            return HttpResponse(resp)
+
+    else:
+        resp = {
+            'status': '400',
+            'message': 'change your method to POST',
+            'action': action
+        }
+        return HttpResponse(resp)
+
+
+
+
+
+@ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def registerUsers(request):
     action = 'registeruser'
     con = connect()
