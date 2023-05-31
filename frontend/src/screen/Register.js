@@ -20,9 +20,8 @@ const LoginScreen = () => {
     axios.post('http://arrive.mandakh.org/login', loginData)
       .then(response => {
         if (response.data && response.data.data && response.data.data.length > 0) {
-          const userid = response.data.data[0].userid;
-          const firstname = response.data.data[0].firstname;
-          updateUser(userid,firstname); 
+          const userdata = response.data.data[0];
+          updateUser(userdata); 
           navigation.navigate('Home');
         } else {
           console.error('Invalid response format111');

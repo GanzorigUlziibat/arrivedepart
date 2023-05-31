@@ -3,16 +3,14 @@ import React, { useState } from 'react';
 import UserContext from './UserContext';
 
 const UserProvider = ({ children }) => {
-  const [userid, setUserId] = useState(null);
-  const [firstname, setFirstname] = useState("");
+  const [detail, setDetail] = useState("");
 
-  const updateUser = (id,name) => {
-    setUserId(id);
-    setFirstname(name);
+  const updateUser = (resp) => {
+    setDetail(resp);
   };
 
   return (
-    <UserContext.Provider value={{ userid,firstname, updateUser }}>
+    <UserContext.Provider value={{ detail, updateUser }}>
       {children}
     </UserContext.Provider>
   );

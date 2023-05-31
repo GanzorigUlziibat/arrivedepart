@@ -8,7 +8,7 @@
     export default function App({navigation}) {
     const [displayText, setDisplayText] = useState('Цагаа бүртгүүлнэ үү');
     const [currentLocation, setCurrentLocation] = useState(null);
-    const { userid, firstname } = useContext(UserContext);
+    const { detail } = useContext(UserContext);
     useEffect(() => {
         getLocation();
     }, []);
@@ -58,7 +58,7 @@
         <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{displayText}</Text>
         <View style={styles.buttonContainer}>
-        <Text>Тавтай Морил {firstname}!</Text>
+        <Text>Тавтай Морил {detail.firstname}!</Text>
             <Pressable style={styles.button} onPress={() => handleButtonPress('Arrive')}>
             <Text style={styles.buttonText}>Ирсэн</Text>
             </Pressable>

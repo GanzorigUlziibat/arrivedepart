@@ -8,7 +8,7 @@ import {AntDesign} from '@expo/vector-icons';
 
 
 const App = ({navigation}) => {
-  const { userid } = useContext(UserContext);
+  const { detail } = useContext(UserContext);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const App = ({navigation}) => {
 
   const fetchData = () => {
     axios
-      .post('http://arrive.mandakh.org/arrlist', { userid: userid })
+      .post('http://arrive.mandakh.org/arrlist', { userid: detail.userid })
       .then(response => {
         setData(response.data.data);
       })
