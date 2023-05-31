@@ -23,7 +23,7 @@ def getUsers(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = sendResponse('200', "Амжилттай", respRow, action)
+    resp = sendResponse(200, "Амжилттай", respRow, action)
 
     return HttpResponse(resp)
 
@@ -45,20 +45,20 @@ def passwCheck(request):
             respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
             
             if respRow:
-                resp = sendResponse('200', "Амжилттай", respRow[0], action)
+                resp = sendResponse(200, "Амжилттай", respRow[0], action)
                 return HttpResponse(resp)
             if not respRow:
                 cursor.execute("SELECT userid,password FROM t_user")
                 columns = cursor.description
                 respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
-                resp = sendResponse('200', "Хэрэглэгч олдсонгүй", respRow, action)
+                resp = sendResponse(200, "Хэрэглэгч олдсонгүй", respRow, action)
                 return HttpResponse(resp)
             else:
-                resp = sendResponse('200', "Зөв утга хийнэ үү", respRow, action)
+                resp = sendResponse(200, "Зөв утга хийнэ үү", respRow, action)
                 return HttpResponse(resp)
         except Exception as e:
             resp = {
-                'status': '500',
+                'status': 500,
                 'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
@@ -67,7 +67,7 @@ def passwCheck(request):
 
     else:
         resp = {
-            'status': '400',
+            'status': 400,
             'message': 'change your method to POST',
             'action': action
         }
@@ -99,7 +99,7 @@ def registerUsers(request):
                 VALUES (DEFAULT, %s, %s, %s, %s, %s);
             """, [firstname, lastname, username, password, stcode])
             resp = {
-                'status': '200',
+                'status': 200,
                 'message': 'Амжилттай',
                 'error': '',
                 'action': action
@@ -108,7 +108,7 @@ def registerUsers(request):
             return JsonResponse(resp)
         except Exception as e:
             resp = {
-                'status': '500',
+                'status': 500,
                 'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
@@ -116,7 +116,7 @@ def registerUsers(request):
             return JsonResponse(resp)
     else:
         resp = {
-            'status': '400',
+            'status': 400,
             'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
@@ -138,21 +138,21 @@ def login(request):
         password = jsond.get('password', 'nokey')
         try:
             cursor.execute(
-                "SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
+                "SELECT  FROM t_user WHERE username = %s AND password = %s;", (username, password))
             columns = cursor.description
             respRow = [{columns[index][0]: column for index, column in enumerate(
                 value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                resp = sendResponse('200', "Амжилттай", respRow, action)
+                resp = sendResponse(200, "Амжилттай", respRow, action)
                 return HttpResponse(resp)
             else:
                 l = [{"username": username}]
-                resp = sendResponse('400', "Амжилтгүй", l, action)
+                resp = sendResponse(400, "Амжилтгүй", l, action)
                 return HttpResponse(resp)
 
         except Error as e:
             resp = {
-                'status': '500',
+                'status': 500,
                 'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
@@ -160,7 +160,7 @@ def login(request):
             return HttpResponse(resp)
     else:
         resp = sendResponse(
-            '400', "Амжилтгүй", 'Invalid request method. Only POST requests are allowed.', action)
+            400, "Амжилтгүй", 'Invalid request method. Only POST requests are allowed.', action)
         return HttpResponse(resp)
 
 
@@ -182,7 +182,7 @@ def sambuulogin(request):
             respRow = [{columns[index][0]: column for index, column in enumerate(
                 value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                resp = sendResponse('200', "Амжилттай", respRow, action)
+                resp = sendResponse(200, "Амжилттай", respRow, action)
                 return HttpResponse(resp)
             else:
                 resp = {
@@ -195,7 +195,7 @@ def sambuulogin(request):
 
         except Error as e:
             resp = {
-                'status': '500',
+                'status': 500,
                 'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
@@ -203,7 +203,7 @@ def sambuulogin(request):
             return JsonResponse(resp)
     else:
         resp = {
-            'status': '400',
+            'status': 400,
             'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
@@ -229,18 +229,18 @@ def arrdep(request):
                 VALUES (DEFAULT, %s, NOW(), %s);
             """, [userid, codearr])
             resp = {
-                'status': '200',
+                'status': 200,
                 'message': 'Амжилттай',
                 'error': '',
                 'action': action
             }
             con.commit()
             resp = sendResponse(
-                '200', "success", "Амжилттай бүртгэлээ", action)
+                200, "success", "Амжилттай бүртгэлээ", action)
             return HttpResponse(resp)
         except Exception as e:
             resp = {
-                'status': '500',
+                'status': 500,
                 'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
@@ -248,7 +248,7 @@ def arrdep(request):
             return JsonResponse(resp)
     else:
         resp = {
-            'status': '400',
+            'status': 400,
             'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
@@ -292,7 +292,7 @@ def arrlist(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultCode': '200', 'resultMessage': 'success',
+    resp = {'resultCode': 200, 'resultMessage': 'success',
             'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
@@ -325,7 +325,7 @@ def addreport(request):
                     VALUES (DEFAULT, %s, NOW(), %s);
                 """, [report, userid])
                 con.commit()
-                resp = sendResponse('200', "Амжилттай", "", action)
+                resp = sendResponse(200, "Амжилттай", "", action)
                 return HttpResponse(resp)
             else:
                 cursor.execute("""
@@ -334,11 +334,11 @@ def addreport(request):
 	                WHERE repdate = %s AND userid = %s;
                 """, [report, date, userid])
                 con.commit()
-                resp = sendResponse('200', "Амжилттай", "", action)
+                resp = sendResponse(200, "Амжилттай", "", action)
                 return HttpResponse(resp)
         except Exception as e:
             resp = {
-                'status': '500',
+                'status': 500,
                 'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
@@ -346,7 +346,7 @@ def addreport(request):
             return JsonResponse(resp)
     else:
         resp = sendResponse(
-            '400', "Амжилтгүй", 'Invalid request method. Only POST requests are allowed.', action)
+            400, "Амжилтгүй", 'Invalid request method. Only POST requests are allowed.', action)
         return JsonResponse(resp)
 
 
@@ -364,7 +364,7 @@ def reportlist(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultcode': '200', 'resultmessage': 'success',
+    resp = {'resultcode': 200, 'resultmessage': 'success',
             'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
@@ -381,11 +381,11 @@ def passwordchange(request):
         cursor.execute(
             f"""UPDATE t_user SET password = substring(gen_random_uuid()::text, 1, 3)""")
         con.commit()
-        resp = sendResponse('200', "Амжилттай", "", action)
+        resp = sendResponse(200, "Амжилттай", "", action)
         return HttpResponse(resp, content_type='application/json')
     except Exception as e:
         resp = {
-            'status': '500',
+            'status': 500,
             'message': 'Амжилтгүй',
             'error': str(e),
             'action': action
