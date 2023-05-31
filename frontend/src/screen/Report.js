@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 
-const AcceptCancelBox = ({ route,  navigation}) => {
+const AcceptCancelBox = ({ route, navigation }) => {
   const { regdate } = route.params;
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
   const handleAccept = () => {
-    console.log('Accepted:', text);
+    console.log("Accepted:", text);
     // Perform accept logic here
   };
 
   const handleCancel = () => {
-    console.log('Cancelled');
+    console.log("Cancelled");
     navigation.goBack();
     // Perform cancel logic here
   };
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 200,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
@@ -56,26 +62,26 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   acceptButton: {
-    backgroundColor: '#61bd4f',
+    backgroundColor: "#61bd4f",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
     marginRight: 10,
   },
   cancelButton: {
-    backgroundColor: '#e02c2c',
+    backgroundColor: "#e02c2c",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   buttonText: {
     fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
