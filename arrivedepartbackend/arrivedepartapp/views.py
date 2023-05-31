@@ -23,7 +23,7 @@ def getUsers(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = sendResponse('200', "success", respRow, action)
+    resp = sendResponse('200', "Амжилттай", respRow, action)
 
     return HttpResponse(resp)
 
@@ -51,7 +51,7 @@ def registerUsers(request):
             """, [firstname, lastname, username, password, stcode])
             resp = {
                 'status': '200',
-                'message': 'success',
+                'message': 'Амжилттай',
                 'error': '',
                 'action': action
             }
@@ -60,7 +60,7 @@ def registerUsers(request):
         except Exception as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -68,7 +68,7 @@ def registerUsers(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
@@ -94,24 +94,24 @@ def login(request):
             respRow = [{columns[index][0]: column for index, column in enumerate(
                 value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                resp = sendResponse('200', "success", respRow, action)
+                resp = sendResponse('200', "Амжилттай", respRow, action)
                 return HttpResponse(resp)
             else:
                 l = [{"username": username}]
-                resp = sendResponse('400', "not success", l, action)
+                resp = sendResponse('400', "Амжилтгүй", l, action)
                 return HttpResponse(resp)
 
         except Error as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
             return HttpResponse(resp)
     else:
         resp = sendResponse(
-            '400', "Invalid request method. Only POST requests are allowed.", '', action)
+            '400', "Амжилтгүй", 'Invalid request method. Only POST requests are allowed.', action)
         return HttpResponse(resp)
 
 
@@ -133,12 +133,12 @@ def sambuulogin(request):
             respRow = [{columns[index][0]: column for index, column in enumerate(
                 value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                resp = sendResponse('200', "success", respRow, action)
+                resp = sendResponse('200', "Амжилттай", respRow, action)
                 return HttpResponse(resp)
             else:
                 resp = {
                     'status': '401',
-                    'message': 'error',
+                    'message': 'Амжилтгүй',
                     'error': 'Invalid username or password',
                     'action': action
                 }
@@ -147,7 +147,7 @@ def sambuulogin(request):
         except Error as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -155,7 +155,7 @@ def sambuulogin(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
@@ -181,18 +181,18 @@ def arrdep(request):
             """, [userid, codearr])
             resp = {
                 'status': '200',
-                'message': 'success',
+                'message': 'Амжилттай',
                 'error': '',
                 'action': action
             }
             con.commit()
             resp = sendResponse(
-                '200', "success", "амжилттай бүртгэлээ", action)
+                '200', "success", "Амжилттай бүртгэлээ", action)
             return HttpResponse(resp)
         except Exception as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -200,7 +200,7 @@ def arrdep(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
@@ -276,7 +276,7 @@ def addreport(request):
                     VALUES (DEFAULT, %s, NOW(), %s);
                 """, [report, userid])
                 con.commit()
-                resp = sendResponse('200', "success", "", action)
+                resp = sendResponse('200', "Амжилттай", "", action)
                 return HttpResponse(resp)
             else:
                 cursor.execute("""
@@ -285,12 +285,12 @@ def addreport(request):
 	                WHERE repdate = %s AND userid = %s;
                 """, [report, date, userid])
                 con.commit()
-                resp = sendResponse('200', "success", "", action)
+                resp = sendResponse('200', "Амжилттай", "", action)
                 return HttpResponse(resp)
         except Exception as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -298,7 +298,7 @@ def addreport(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
@@ -336,12 +336,12 @@ def passwordchange(request):
         cursor.execute(
             f"""UPDATE t_user SET password = substring(gen_random_uuid()::text, 1, 3)""")
         con.commit()
-        resp = sendResponse('200', "success", "", action)
+        resp = sendResponse('200', "Амжилттай", "", action)
         return HttpResponse(resp, content_type='application/json')
     except Exception as e:
         resp = {
             'status': '500',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': str(e),
             'action': action
         }
