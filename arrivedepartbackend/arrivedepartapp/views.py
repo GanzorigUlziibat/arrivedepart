@@ -12,14 +12,14 @@ import datetime
 
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
-def getUsers(request):
-    action = 'getUsers'
+def getUser(request):
+    action = 'getUser'
     jsond = json.loads(request.body)
     action = jsond.get('action', 'nokey')
     userid = jsond.get('userid', 'nokey')
     con = connect()
     cursor = con.cursor()
-    cursor.execute(f"SELECT * FROM t_user WHERE t_user.userid = {userid};")
+    cursor.execute(f"SELECT userid, firstname, lastname, username, stcode FROM t_user WHERE t_user.userid = {userid};")
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
