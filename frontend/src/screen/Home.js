@@ -3,15 +3,55 @@ import { View, Text, Pressable, SafeAreaView, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import * as geolib from "geolib";
 import { useNavigation } from "@react-navigation/native";
-import UserContext from "../UserContext";
+
+import {
+  sendRequest,
+  urlArriveService,
+  _storeData,
+  _retrieveData,
+} from "../Methods";
 
 export default function App({ navigation }) {
   const [displayText, setDisplayText] = useState("Цагаа бүртгүүлнэ үү");
   const [currentLocation, setCurrentLocation] = useState(null);
-  const { detail } = useContext(UserContext);
-  useEffect(() => {
+  const [detail, setDetail] = useState({});
+  const [userid1, setUserid1] = useState();
+
+  useEffect(async () => {
+    let useridvalue = await _retrieveData("userid");
+    if (useridvalue == null) {
+      navigation.navigate("Login");
+    } else {
+      console.log(useridvalue, "val");
+      setUserid1(useridvalue);
+      // console.log(userid1, "id");
+    }
+    const getUsersData = {
+      action: "getUsers",
+      userid: useridvalue,
+    };
+
+    sendRequest(urlArriveService + "getuser", getUsersData)
+      .then((data) => {
+        // setIsLoading(false);
+        // setDatas(data);
+        // console.log(data);
+        if (data.resultCode == 200)
+        {
+          setDetail(data.data[0]);
+        }
+        else
+        {
+          alert(data.resultMessage);
+        }
+      })
+      .catch((error) => {
+        // setIsLoading(false);
+        console.error(error);
+      });
+
     getLocation();
-  }, []);
+  },[]);
 
   const getLocation = async () => {
     try {

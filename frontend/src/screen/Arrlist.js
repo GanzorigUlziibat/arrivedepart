@@ -9,30 +9,59 @@ import {
   Animated,
   Pressable,
 } from "react-native";
-import UserContext from "../UserContext";
+
 import axios from "axios";
 import { Table, Row, Rows } from "react-native-table-component";
 import { AntDesign } from "@expo/vector-icons";
 
+import {
+  sendRequest,
+  urlArriveService,
+  _storeData,
+  _retrieveData,
+} from "../Methods";
+
 const App = ({ navigation }) => {
-  const { detail } = useContext(UserContext);
   const [data, setData] = useState([]);
+  
+  const [userid1, setUserid1] = useState();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  useEffect(async () => {
+    const useridvalue = await _retrieveData("userid");
+    if (useridvalue == null) {
+      navigation.navigate("Login");
+    } else {
+      console.log(useridvalue, "arrlist");
+    }
+    const getUsersData = {
+      action: "arrlist",
+      userid: useridvalue,
+    };
 
-  const fetchData = () => {
-    axios
-      .post("http://arrive.mandakh.org/arrlist", { userid: detail.userid })
-      .then((response) => {
-        setData(response.data.data);
+    sendRequest(urlArriveService + "arrlist", getUsersData)
+      .then((data) => {
+        // if (data.resultCode == 200)
+        // {
+        //   console.log(data.data[0],"amjiltta")
+        //   setDetail(data.data[0]);
+        // }
+        // else
+        // {
+        //   alert(data.resultMessage);
+        // }
+        console.log(data.data,"data  ")
       })
       .catch((error) => {
+        // setIsLoading(false);
         console.error(error);
       });
-  };
 
+    getLocation();
+  },[]);  
+ 
+ 
+
+ 
   const renderItem = ({ item }) => {
     return (
       <Pressable
