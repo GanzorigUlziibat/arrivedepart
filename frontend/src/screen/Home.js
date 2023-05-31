@@ -16,26 +16,36 @@ export default function App({ navigation }) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [detail, setDetail] = useState({});
   const [userid1, setUserid1] = useState();
+  let useridvalue;
 
-  useEffect(async () => {
-    let useridvalue = await _retrieveData("userid");
-    if (useridvalue == null) {
-      navigation.navigate("Login");
-    } else {
-      console.log(useridvalue, "val");
-      setUserid1(useridvalue);
-      // console.log(userid1, "id");
+  useEffect(() => {
+    let useridvalue;
+    async function fetchData() {
+      useridvalue = await _retrieveData("userid");
+      if (useridvalue == null) {
+        navigation.navigate("Login");
+      } else {
+        console.log(useridvalue, "val");
+        setUserid1(useridvalue);
+        // console.log(userid1, "id");
+      }
     }
+
+    fetchData();
+    getLocation();
+  }, []);
+
+  useEffect(() => {
     const getUsersData = {
-      action: "getUsers",
-      userid: useridvalue,
+      action: "getuser",
+      userid: userid1,
     };
 
     sendRequest(urlArriveService + "getuser", getUsersData)
       .then((data) => {
         // setIsLoading(false);
         // setDatas(data);
-        // console.log(data);
+        console.log(data, "datas");
         if (data.resultCode == 200) {
           setDetail(data.data[0]);
         } else {
@@ -46,9 +56,7 @@ export default function App({ navigation }) {
         // setIsLoading(false);
         console.error(error);
       });
-
-    getLocation();
-  }, []);
+  }, [userid1]);
 
   const getLocation = async () => {
     try {
@@ -99,10 +107,10 @@ export default function App({ navigation }) {
       );
       if (distance <= 50) {
         if (text === "Arrive") {
-          alert(distance + " am");
+          alert(distance + " m");
           setDisplayText("Тавтай морил");
         } else if (text === "Depart") {
-          alert(distance + " am");
+          alert(distance + " m");
           setDisplayText("Баяртай");
         } else if (text === "Button 3");
       } else {

@@ -28,6 +28,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
   // const navigation = useNavigation();
+
   async function fetchData() {
     const userid = await _retrieveData("userid");
     if (userid != null) {
@@ -48,13 +49,15 @@ const LoginScreen = ({ navigation }) => {
       password: password,
     };
 
+    // console.log(loginData);
+
     sendRequest(urlArriveService + "login", loginData)
       .then((data) => {
+        // console.log(1);
         // setIsLoading(false);
-        // setDatas(data);
         if (data.resultCode == 200) {
           // navigation.navigate("Home", { detail: data.data });
-          // console.log(data.data[0].userid);
+          console.log(data.data[0].userid);
           _storeData("userid", data.data[0].userid);
         } else {
           alert(data.resultMessage);
@@ -64,31 +67,6 @@ const LoginScreen = ({ navigation }) => {
         // setIsLoading(false);
         console.error(error);
       });
-
-    //   axios
-    //     .post("http://arrive.mandakh.org/login", loginData)
-    //     .then((response) => {
-    //       if (
-    //         response.data &&
-    //         response.data.data &&
-    //         response.data.data.length > 0
-    //       ) {
-    //         const userdata = response.data.data[0];
-    //         AsyncStorage.setItem("userData", JSON.stringify({ userdata }))
-    //           .then(() => {
-    //             updateUser(userdata);
-    //             navigation.navigate("Home");
-    //           })
-    //           .catch((error) => {
-    //             console.error("Error saving user data:", error);
-    //           });
-    //       } else {
-    //         console.error("Invalid response format111");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
   };
 
   return (

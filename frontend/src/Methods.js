@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const urlArriveService = "http://arrive.mandakh.org/";
 
 export const sendRequest = async (url, body) => {
-  console.log(url);
+  console.log(url, body);
   try {
     let response = await fetch(url, {
       method: "POST",
@@ -24,23 +24,19 @@ export const sendRequest = async (url, body) => {
   }
 };
 
-
 export const _storeData = async (key, value) => {
   try {
-    await AsyncStorage.setItem(
-      key,
-      value,
-    );
+    await AsyncStorage.setItem(key, value.toString());
     // const value1 = await AsyncStorage.getItem(key);
     // console.log(value1);
   } catch (error) {
     // Error saving data
-    console.log("_storeData"+error)
+    console.log("_storeData" + error);
   }
 };
 
 // Fetching data:
-export const _retrieveData = async(key) => {
+export const _retrieveData = async (key) => {
   try {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
@@ -50,6 +46,6 @@ export const _retrieveData = async(key) => {
     }
   } catch (error) {
     // Error retrieving data
-    console.log("_retrieveData"+error)
+    console.log("_retrieveData" + error);
   }
 };
