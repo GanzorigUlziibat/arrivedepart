@@ -243,8 +243,7 @@ def arrlist(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultcode': '200', 'resultmessage': 'success',
-            'data': respRow, 'size': len(respRow), 'action': action}
+    resp = sendResponse('200', "Амжилттай", respRow, action)
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
@@ -296,12 +295,8 @@ def addreport(request):
             }
             return JsonResponse(resp)
     else:
-        resp = {
-            'status': '400',
-            'message': 'Амжилтгүй',
-            'error': 'Invalid request method. Only POST requests are allowed.',
-            'action': action
-        }
+        resp = sendResponse(
+            '400', "Амжилтгүй", 'Invalid request method. Only POST requests are allowed.', action)
         return JsonResponse(resp)
 
 
@@ -319,8 +314,7 @@ def reportlist(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultcode': '200', 'resultmessage': 'success',
-            'data': respRow, 'size': len(respRow), 'action': action}
+    resp = sendResponse('200', "Амжилттай", respRow, action)
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
