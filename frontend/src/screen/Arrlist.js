@@ -9,7 +9,7 @@ import {
   Animated,
   Pressable,
 } from "react-native";
-import UserContext from "../UserContext";
+
 import axios from "axios";
 import { Table, Row, Rows } from "react-native-table-component";
 import { AntDesign } from "@expo/vector-icons";
@@ -20,30 +20,30 @@ const App = ({ navigation }) => {
   
   const [userid1, setUserid1] = useState();
 
-  useEffect(async () => {
-    const useridvalue = await _retrieveData("userid");
-    if (useridvalue == null) {
-      navigation.navigate("Login");
-    } else {
-      console.log(useridvalue, "arrlist");
-    }
-    const getUsersData = {
-      action: "arrlist",
-      userid: useridvalue,
-    };
+  // useEffect(async () => {
+  //   const useridvalue = await _retrieveData("userid");
+  //   if (useridvalue == null) {
+  //     navigation.navigate("Login");
+  //   } else {
+  //     console.log(useridvalue, "arrlist");
+  //   }
+  //   const getUsersData = {
+  //     action: "arrlist",
+  //     userid: useridvalue,
+  //   };
 
-  const fetchData = () => {
-    axios
-      .post("http://arrive.mandakh.org/arrlist", { userid: detail.userid })
-      .then((response) => {
-        setData(response.data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  // const fetchData = () => {
+  //   axios
+  //     .post("http://arrive.mandakh.org/arrlist", { userid: detail.userid })
+  //     .then((response) => {
+  //       setData(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
 
-    getLocation();
-  },[]);  
+  //   getLocation();
+  // },[]);  
  
  
 
