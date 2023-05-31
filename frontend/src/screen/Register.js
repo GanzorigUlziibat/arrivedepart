@@ -4,6 +4,7 @@ import { View, Text, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import UserContext from '../UserContext';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
   const { updateUser } = useContext(UserContext);
@@ -21,8 +22,15 @@ const LoginScreen = () => {
       .then(response => {
         if (response.data && response.data.data && response.data.data.length > 0) {
           const userdata = response.data.data[0];
-          updateUser(userdata); 
-          navigation.navigate('Home');
+          AsyncStorage.setItem('userData', JSON.stringify({ userdata }))
+          .then(() => {
+            updateUser(userdata); 
+            navigation.navigate('Home');
+          })
+          .catch(error => {
+            console.error('Error saving user data:', error);
+          });
+          
         } else {
           console.error('Invalid response format111');
         }
