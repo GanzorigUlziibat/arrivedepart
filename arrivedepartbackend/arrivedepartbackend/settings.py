@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from datetime import datetime
 from pathlib import Path
-import psycopg2,json
+import psycopg2
+import json
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -136,21 +138,25 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-def sendResponse(resultCode , resultMessege, data, action):
+
+def sendResponse(resultCode, resultMessege, data, action):
     resp = {}
     resp["resultCode"] = resultCode
-    resp["resultMessege"] = resultMessege
+    resp["resultMessage"] = resultMessege
     resp["data"] = data
     resp["size"] = len(data)
     resp["action"] = action
+    now = datetime.now()
+    resp["date"] = now.strftime("%Y/%m/%d %H:%M:%S")
     return json.dumps(resp)
+
 
 def connect():
     con = psycopg2.connect(
-        dbname = 'db_arrdep',
-        user = 'uarrdep',
-        password = 'lab206',
-        host = '202.131.254.138',
-        port = '5938',
+        dbname='db_arrdep',
+        user='uarrdep',
+        password='lab206',
+        host='202.131.254.138',
+        port='5938',
     )
     return con

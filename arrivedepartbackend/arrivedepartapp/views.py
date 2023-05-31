@@ -10,6 +10,7 @@ from django.db import Error
 import datetime
 # Create your views here.
 
+
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def getUsers(request):
     action = 'getUsers'
@@ -22,7 +23,7 @@ def getUsers(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = sendResponse('200', "success", respRow, action)
+    resp = sendResponse('200', "Амжилттай", respRow, action)
 
     return HttpResponse(resp)
 
@@ -33,7 +34,7 @@ def registerUsers(request):
     con = connect()
     cursor = con.cursor()
     print(request.method)
-    
+
     if request.method == 'POST':
         jsond = json.loads(request.body)
         action = jsond.get('action', 'nokey')
@@ -50,7 +51,7 @@ def registerUsers(request):
             """, [firstname, lastname, username, password, stcode])
             resp = {
                 'status': '200',
-                'message': 'success',
+                'message': 'Амжилттай',
                 'error': '',
                 'action': action
             }
@@ -59,7 +60,7 @@ def registerUsers(request):
         except Exception as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -67,12 +68,12 @@ def registerUsers(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
         return JsonResponse(resp)
-    
+
 
 @ api_view(['POST', 'GET', "PUT", "PATCH", "DELETE"])
 def login(request):
@@ -87,70 +88,66 @@ def login(request):
         username = jsond.get('username', 'nokey')
         password = jsond.get('password', 'nokey')
         try:
-            cursor.execute("SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
+            cursor.execute(
+                "SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
             columns = cursor.description
-            respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
+            respRow = [{columns[index][0]: column for index, column in enumerate(
+                value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                resp = sendResponse('200', "success", respRow, action)
+                resp = sendResponse('200', "Амжилттай", respRow, action)
                 return HttpResponse(resp)
             else:
-                resp = {
-                    'status': '401',
-                    'message': 'error',
-                    'error': 'Invalid username or password',
-                    'action': action
-                }
-                return JsonResponse(resp)
+                l = [{"username": username}]
+                resp = sendResponse('400', "Амжилтгүй", l, action)
+                return HttpResponse(resp)
 
-            
         except Error as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
-            return JsonResponse(resp)
+            return HttpResponse(resp)
     else:
-        resp = {
-            'status': '400',
-            'message': 'error',
-            'error': 'Invalid request method. Only POST requests are allowed.',
-            'action': action
-        }
-        return JsonResponse(resp)
+        resp = sendResponse(
+            '400', "Амжилтгүй", 'Invalid request method. Only POST requests are allowed.', action)
+        return HttpResponse(resp)
 
-@ api_view(['POST', 'GET', "PUT", "PATCH", "DELETE"])    
+
+@ api_view(['POST', 'GET', "PUT", "PATCH", "DELETE"])
 def sambuulogin(request):
     action = 'sambuulogin'
     con = connect()
     cursor = con.cursor()
-    
+
     if request.method == 'POST':
         jsond = json.loads(request.body)
         action = jsond.get('action', 'nokey')
         username = jsond.get('username', 'nokey')
         password = jsond.get('password', 'nokey')
         try:
-            cursor.execute("SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
+            cursor.execute(
+                "SELECT * FROM t_user WHERE username = %s AND password = %s;", (username, password))
             columns = cursor.description
-            respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
+            respRow = [{columns[index][0]: column for index, column in enumerate(
+                value)} for value in cursor.fetchall()]
             if len(respRow) == 1:
-                resp = sendResponse('200', "success", respRow, action)
+                resp = sendResponse('200', "Амжилттай", respRow, action)
                 return HttpResponse(resp)
             else:
                 resp = {
                     'status': '401',
-                    'message': 'error',
+                    'message': 'Амжилтгүй',
                     'error': 'Invalid username or password',
                     'action': action
                 }
                 return JsonResponse(resp)
-            
+
         except Error as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -158,7 +155,7 @@ def sambuulogin(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
@@ -170,7 +167,7 @@ def arrdep(request):
     action = 'arrdep'
     con = connect()
     cursor = con.cursor()
-    
+
     if request.method == 'POST':
         jsond = json.loads(request.body)
         action = jsond.get('action', 'nokey')
@@ -184,17 +181,18 @@ def arrdep(request):
             """, [userid, codearr])
             resp = {
                 'status': '200',
-                'message': 'success',
+                'message': 'Амжилттай',
                 'error': '',
                 'action': action
             }
             con.commit()
-            resp = sendResponse('200', "success", "амжилттай бүртгэлээ", action)
+            resp = sendResponse(
+                '200', "success", "Амжилттай бүртгэлээ", action)
             return HttpResponse(resp)
         except Exception as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -202,12 +200,13 @@ def arrdep(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
         return JsonResponse(resp)
 # dsadasddasdasdsa
+
 
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -242,20 +241,22 @@ def arrlist(request):
                     order by date(regdate)
                     ) a2 on a1.regdate = a2.regdate""")
     columns = cursor.description
-    respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultcode': '200', 'resultmessage': 'success', 'data': respRow, 'size': len(respRow), 'action': action}
+    respRow = [{columns[index][0]:column for index,
+                column in enumerate(value)} for value in cursor.fetchall()]
+    resp = {'resultcode': '200', 'resultmessage': 'success',
+            'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
     return HttpResponse(json_resp, content_type='application/json')
 
- 
+
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def addreport(request):
     action = 'addreport'
     con = connect()
     cursor = con.cursor()
-    
+
     if request.method == 'POST':
         jsond = json.loads(request.body)
         action = jsond.get('action', 'nokey')
@@ -264,16 +265,18 @@ def addreport(request):
         report = jsond.get('report', 'nokey')
 
         try:
-            cursor.execute(f"""SELECT * FROM public.t_report WHERE repdate ={date} AND userid = {userid}""")
+            cursor.execute(
+                f"""SELECT * FROM public.t_report WHERE repdate ={date} AND userid = {userid}""")
             columns = cursor.description
-            respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
+            respRow = [{columns[index][0]:column for index, column in enumerate(
+                value)} for value in cursor.fetchall()]
             if len(respRow) == 0:
                 cursor.execute("""
                     INSERT INTO t_report (repid, report, repdate, userid)
                     VALUES (DEFAULT, %s, NOW(), %s);
                 """, [report, userid])
                 con.commit()
-                resp = sendResponse('200', "success", "", action)
+                resp = sendResponse('200', "Амжилттай", "", action)
                 return HttpResponse(resp)
             else:
                 cursor.execute("""
@@ -282,12 +285,12 @@ def addreport(request):
 	                WHERE repdate = %s AND userid = %s;
                 """, [report, date, userid])
                 con.commit()
-                resp = sendResponse('200', "success", "", action)
+                resp = sendResponse('200', "Амжилттай", "", action)
                 return HttpResponse(resp)
         except Exception as e:
             resp = {
                 'status': '500',
-                'message': 'error',
+                'message': 'Амжилтгүй',
                 'error': str(e),
                 'action': action
             }
@@ -295,12 +298,12 @@ def addreport(request):
     else:
         resp = {
             'status': '400',
-            'message': 'error',
+            'message': 'Амжилтгүй',
             'error': 'Invalid request method. Only POST requests are allowed.',
             'action': action
         }
         return JsonResponse(resp)
-    
+
 
 @ api_view(['POST', "GET", "PUT", "PATCH", "DELETE"])
 def reportlist(request):
@@ -311,10 +314,13 @@ def reportlist(request):
     date = jsond.get('date', 'nokey')
     con = connect()
     cursor = con.cursor()
-    cursor.execute(f"""SELECT * FROM public.t_report WHERE repdate ={date}  AND userid = {userid}""")
+    cursor.execute(
+        f"""SELECT * FROM public.t_report WHERE repdate ={date}  AND userid = {userid}""")
     columns = cursor.description
-    respRow = [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultcode': '200', 'resultmessage': 'success', 'data': respRow, 'size': len(respRow), 'action': action}
+    respRow = [{columns[index][0]:column for index,
+                column in enumerate(value)} for value in cursor.fetchall()]
+    resp = {'resultcode': '200', 'resultmessage': 'success',
+            'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
@@ -327,17 +333,16 @@ def passwordchange(request):
     try:
         con = connect()
         cursor = con.cursor()
-        cursor.execute(f"""UPDATE t_user SET password = substring(gen_random_uuid()::text, 1, 3)""")
+        cursor.execute(
+            f"""UPDATE t_user SET password = substring(gen_random_uuid()::text, 1, 3)""")
         con.commit()
-        resp = sendResponse('200', "success", "", action)
+        resp = sendResponse('200', "Амжилттай", "", action)
         return HttpResponse(resp, content_type='application/json')
     except Exception as e:
-            resp = {
-                'status': '500',
-                'message': 'error',
-                'error': str(e),
-                'action': action
-            }
-            return HttpResponse(resp)
-
-
+        resp = {
+            'status': '500',
+            'message': 'Амжилтгүй',
+            'error': str(e),
+            'action': action
+        }
+        return HttpResponse(resp)
