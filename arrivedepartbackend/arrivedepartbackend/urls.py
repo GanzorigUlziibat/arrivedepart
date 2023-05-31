@@ -18,7 +18,7 @@ from django.urls import path
 from arrivedepartapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('getuser', views.getUsers),
+    path('getuser', views.getUser),
     path('passwcheck', views.passwCheck),
     path('registeruser', views.registerUsers),
     path('login', views.login),
