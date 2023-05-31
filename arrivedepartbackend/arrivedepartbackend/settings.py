@@ -147,7 +147,7 @@ def sendResponse(resultCode, resultMessege, data, action):
     resp["size"] = len(data)
     resp["action"] = action
     now = datetime.now()
-    resp["date"] = now.strftime("%Y/%m/%d %H:%M:%S")
+    resp["regdate"] = now.strftime("%Y/%m/%d %H:%M:%S")
     return json.dumps(resp)
 
 
