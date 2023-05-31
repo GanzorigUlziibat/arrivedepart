@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 def sendResponse(resultCode, resultMessege, data, action):
     resp = {}
     resp["resultCode"] = resultCode
-    resp["resultMessege"] = resultMessege
+    resp["resultMessage"] = resultMessege
     resp["data"] = data
     resp["size"] = len(data)
     resp["action"] = action
