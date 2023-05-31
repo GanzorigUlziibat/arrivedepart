@@ -21,21 +21,17 @@ import {
 const App = ({ navigation }) => {
   // const { detail } = useContext(UserContext);
   const [data, setData] = useState([]);
-  const [userid1, setUserid1] = useState();
   const [detail, setDetail] = useState([]);
   useEffect(async () => {
     let useridvalue = await _retrieveData("userid");
     if (useridvalue == null) {
       navigation.navigate("Login");
     } else {
-      // console.log(useridvalue, "val");
-      setUserid1(useridvalue);
-      // console.log(userid1, "id");
+      console.log(useridvalue, "id");
     }
     const arrlistData = {
       action: "arrlist",
-      // userid: useridvalue,
-      userid: 1,
+      userid: useridvalue,
     };
 
     sendRequest(urlArriveService + "arrlist", arrlistData)
@@ -47,7 +43,7 @@ const App = ({ navigation }) => {
         if (data.resultCode == 200)
         {
           data && setDetail(data.data);
-          console.log(detail,'detail');
+          console.log(data.data,'detail');
         }
         else
         {
