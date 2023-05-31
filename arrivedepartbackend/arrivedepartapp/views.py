@@ -243,7 +243,8 @@ def arrlist(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = sendResponse('200', "Амжилттай", respRow, action)
+    resp = {'resultCode': '200', 'resultMessage': 'success',
+            'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
@@ -314,7 +315,8 @@ def reportlist(request):
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = sendResponse('200', "Амжилттай", respRow, action)
+    resp = {'resultcode': '200', 'resultmessage': 'success',
+            'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
     json_resp = json.dumps(resp, cls=CustomJSONEncoder)
