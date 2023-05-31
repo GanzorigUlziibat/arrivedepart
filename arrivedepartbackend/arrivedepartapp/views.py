@@ -47,11 +47,14 @@ def passwCheck(request):
             if respRow:
                 resp = sendResponse('200', "Амжилттай", respRow[0], action)
                 return HttpResponse(resp)
-            else:
+            if not respRow:
                 cursor.execute("SELECT userid,password FROM t_user")
                 columns = cursor.description
                 respRow = [{columns[index][0]: column for index, column in enumerate(value)} for value in cursor.fetchall()]
                 resp = sendResponse('200', "Хэрэглэгч олдсонгүй", respRow, action)
+                return HttpResponse(resp)
+            else:
+                resp = sendResponse('200', "Зөв утга хийнэ үү", respRow, action)
                 return HttpResponse(resp)
         except Exception as e:
             resp = {
