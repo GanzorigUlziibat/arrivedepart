@@ -138,11 +138,7 @@ def login(request):
         password = jsond.get('password', 'nokey')
         try:
             cursor.execute(
-<<<<<<< Updated upstream
-                "SELECT  FROM t_user WHERE username = %s AND password = %s;", (username, password))
-=======
                 "SELECT userid, firstname, lastname, username, stcode FROM t_user WHERE username = %s AND password = %s;", (username, password))
->>>>>>> Stashed changes
             columns = cursor.description
             respRow = [{columns[index][0]: column for index, column in enumerate(
                 value)} for value in cursor.fetchall()]
@@ -155,17 +151,8 @@ def login(request):
                 return HttpResponse(resp)
 
         except Error as e:
-<<<<<<< Updated upstream
-            resp = {
-                'status': 500,
-                'message': 'Амжилтгүй',
-                'error': str(e),
-                'action': action
-            }
-=======
             resp = sendResponse(500, "Амжилтгүй", str(e), action)
                 
->>>>>>> Stashed changes
             return HttpResponse(resp)
     else:
         resp = sendResponse(
