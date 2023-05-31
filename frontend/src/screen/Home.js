@@ -37,10 +37,10 @@ export default function App({ navigation }) {
       );
       if (distance <= 50) {
         if (text === "Arrive") {
-          alert(distance + " метр");
+          alert(distance + " am");
           setDisplayText("Тавтай морил");
         } else if (text === "Depart") {
-          alert(distance + " метр");
+          alert(distance + " am");
           setDisplayText("Баяртай");
         } else if (text === "Button 3");
       } else {
