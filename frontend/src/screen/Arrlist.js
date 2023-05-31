@@ -67,7 +67,7 @@ const App = ({ navigation }) => {
  
   const renderItem = ({ item }) => {
     return (
-      <Pressable style={styles.item} onPress={() => navigation.navigate('Report', {regdate:item.data})}>
+      <Pressable style={styles.item} onPress={() => navigation.navigate('Report', {regdate:item.regdate})}>
         <View style={styles.item1}><Text style={styles.itemDatetxt}>{item.regdate}</Text></View>
         <View style={styles.item2}><Text style={styles.itemIrsentxt}>{item.irsentsag}</Text></View>
         <View style={styles.item3}><Text style={styles.itemYavsantxt}>{item.yavsantsag}</Text></View>
