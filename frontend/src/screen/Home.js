@@ -36,12 +36,9 @@ export default function App({ navigation }) {
         // setIsLoading(false);
         // setDatas(data);
         // console.log(data);
-        if (data.resultCode == 200)
-        {
+        if (data.resultCode == 200) {
           setDetail(data.data[0]);
-        }
-        else
-        {
+        } else {
           alert(data.resultMessage);
         }
       })
@@ -51,7 +48,7 @@ export default function App({ navigation }) {
       });
 
     getLocation();
-  },[]);
+  }, []);
 
   const getLocation = async () => {
     try {
@@ -66,6 +63,31 @@ export default function App({ navigation }) {
       console.log("Error getting location:", error);
       setDisplayText("Error getting location");
     }
+  };
+
+  const insertArriveDepart = (userid, codearr) => {
+    const arrdepData = {
+      action: "arrdep",
+      userid: 1,
+      codearr: 2,
+    };
+
+    sendRequest(urlArriveService + "arrdep", arrdepData)
+      .then((data) => {
+        // setIsLoading(false);
+        // setDatas(data);
+        if (data.resultCode == 200) {
+          // navigation.navigate("Home", { detail: data.data });
+          // console.log(data.data[0].userid);
+          _storeData("userid", data.data[0].userid);
+        } else {
+          alert(data.resultMessage);
+        }
+      })
+      .catch((error) => {
+        // setIsLoading(false);
+        console.error(error);
+      });
   };
 
   const handleButtonPress = (text) => {

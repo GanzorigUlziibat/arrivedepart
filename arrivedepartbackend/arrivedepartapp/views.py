@@ -151,12 +151,8 @@ def login(request):
                 return HttpResponse(resp)
 
         except Error as e:
-            resp = {
-                'status': 500,
-                'message': 'Амжилтгүй',
-                'error': str(e),
-                'action': action
-            }
+            resp = sendResponse(500, "Амжилтгүй", str(e), action)
+                
             return HttpResponse(resp)
     else:
         resp = sendResponse(
