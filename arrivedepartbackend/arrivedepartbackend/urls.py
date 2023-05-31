@@ -19,6 +19,7 @@ from arrivedepartapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('getuser', views.getUsers),
+    path('passwcheck', views.passwCheck),
     path('registeruser', views.registerUsers),
     path('login', views.login),
     path('arrlist', views.arrlist),
