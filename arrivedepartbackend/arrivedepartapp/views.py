@@ -268,9 +268,8 @@ def arrlist(request):
     userid = jsond.get('userid', 'nokey')
     con = connect()
     cursor = con.cursor()
-    cursor.execute(f"""SELECT 
-                    COALESCE(a1.regdate, a2.regdate) regdate
-                    , MIN(userid) AS userid
+    cursor.execute(f"""SELECT COALESCE(a1.userid, a2.userid) userid
+                    , COALESCE(a1.regdate, a2.regdate) regdate
                     --, a1.irsentsag
                     --, a2.yavsantsag
                     , TO_CHAR(a1.irsentsag, 'HH24:MI') AS irsentsag
@@ -278,12 +277,12 @@ def arrlist(request):
                     --, EXTRACT(HOUR FROM a1.irsentsag) || ':' || EXTRACT(MINUTE FROM a1.irsentsag) AS irsentsag
                     --, EXTRACT(HOUR FROM a2.yavsantsag) || ':' || EXTRACT(MINUTE FROM a2.yavsantsag) AS yavsantsag
                     FROM (
-                    Select date(regdate) regdate , min(regdate) irsentsag ,min(codearr) from t_arr 
+                    Select MIN(userid) AS userid, date(regdate) regdate , min(regdate) irsentsag ,min(codearr) from t_arr 
                     where userid = {userid} and codearr = 1
                     group by date(regdate)
                     order by date(regdate)
                     ) a1 full join (
-                    Select date(regdate) as regdate, max(regdate) yavsantsag ,max(codearr) from t_arr 
+                    Select MIN(userid) AS userid, date(regdate) as regdate, max(regdate) yavsantsag ,max(codearr) from t_arr 
                     where userid = {userid} and codearr = 2
                     group by date(regdate)
                     order by date(regdate)
