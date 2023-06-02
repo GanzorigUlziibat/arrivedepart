@@ -7,19 +7,27 @@ import {
   StyleSheet,
 } from "react-native";
 
+import {
+  sendRequest,
+  urlArriveService,
+  _storeData,
+  _retrieveData,
+} from "../Methods";
+
 const AcceptCancelBox = ({ route, navigation }) => {
   const { userid, regdate } = route.params;
   const [detail, setDetail] = useState([]);
   const [text, setText] = useState("");
 
   useEffect(() => {
+    console.log("start");
     const fetchData = async () => {
       const reportlistData = {
         action: "reportlist",
         userid: userid,
-        date: regdate,
+        regdate: regdate,
       };
-      console.log(arrlistData, "arrlistData");
+      console.log(reportlistData, "reportlistData");
       try {
         const response = await sendRequest(
           urlArriveService + "reportlist",
@@ -27,7 +35,9 @@ const AcceptCancelBox = ({ route, navigation }) => {
         );
 
         if (response.resultCode == 200) {
-          response && setDetail(response.data);
+          setDetail(response.data);
+          setText(response.data[0].report);
+          console.log(detail);
         } else {
           alert(response && response.resultMessage);
         }
