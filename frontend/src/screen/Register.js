@@ -56,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
       // navigation.navigate("Home", { detail: data.data });
       // console.log(data.data[0].userid);
       _storeData("userid", response.data[0].userid);
-      navigation.navigate("Home");
+      navigation.navigate("Home", { userid: response.data[0].userid });
     } else {
       alert(response.resultMessage);
     }

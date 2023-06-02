@@ -19,35 +19,37 @@ import {
 } from "../Methods";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function App({ navigation }) {
+export default function App({ route, navigation }) {
+  const { userid } = route.params;
+  //   let userid = 30;
   const [displayText, setDisplayText] = useState("Цагаа бүртгүүлнэ үү");
   const [currentLocation, setCurrentLocation] = useState(null);
   const [detail, setDetail] = useState({});
-  const [userid1, setUserid1] = useState(1);
-
-  const officeLocation = { latitude: 47.9203302, longitude: 106.8832056 }; // Replace with your office location coordinates
+  //   const [userid1, setUserid1] = useState();
+  //   47.927595, 106.889073
+  const officeLocation = { latitude: 47.927595, longitude: 106.889073 }; // Replace with your office location coordinates
 
   useEffect(() => {
     let useridvalue;
-    async function fetchData() {
-      useridvalue = await _retrieveData("userid");
-      if (useridvalue == null) {
-        navigation.navigate("Register");
-      } else {
-        // console.log(useridvalue, "val");
-        setUserid1(useridvalue);
-        // console.log(userid1, "id");
-      }
-    }
+    // async function fetchData() {
+    //   useridvalue = await _retrieveData("userid");
+    //   if (useridvalue == null) {
+    //     navigation.navigate("Register");
+    //   } else {
+    //     // console.log(useridvalue, "val");
+    //     setUserid1(useridvalue);
+    //     // console.log(userid1, "id");
+    //   }
+    // }
 
-    fetchData();
+    // fetchData();
     getLocation();
   }, []);
 
   useEffect(() => {
     const getUsersData = {
       action: "getuser",
-      userid: userid1,
+      userid: userid,
     };
     const fetchData = async () => {
       try {
@@ -67,7 +69,7 @@ export default function App({ navigation }) {
     };
 
     fetchData();
-  }, [userid1]);
+  }, []);
 
   const getLocation = async () => {
     try {
@@ -118,8 +120,8 @@ export default function App({ navigation }) {
       //   console.log(currentLocation.coords, "Current location");
       //   console.log(officeLocation, "office location");
 
-      if (distance <= 50000000000000000) {
-        // if (distance <= 50) {
+      //   if (distance <= 50000000000000000) {
+      if (distance <= 50) {
         if (text === "Arrive") {
           insertArriveDepart(detail.userid, 1);
           setDisplayText("Тавтай морил");
@@ -131,7 +133,7 @@ export default function App({ navigation }) {
         }
       } else {
         setDisplayText("Та ажил дээрээ байхгүй байна");
-        alert(distance + " метр");
+        alert("Та ажил дээрээ байхгүй байна" + distance + " метр");
       }
     } else {
       setDisplayText("Цагаа бүртгүүлнэ үү");
@@ -162,7 +164,7 @@ export default function App({ navigation }) {
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate("Arrlist", { userid: userid1 })}
+          onPress={() => navigation.navigate("Arrlist", { userid: userid })}
         >
           <Text style={styles.buttonText}>Ирц харах</Text>
         </Pressable>

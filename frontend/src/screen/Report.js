@@ -103,7 +103,7 @@ const AcceptCancelBox = ({ route, navigation }) => {
           <Text style={styles.buttonText}>Хадгалах</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
-          <Text style={styles.buttonText}>Болих</Text>
+          <Text style={styles.buttonText}>Буцах</Text>
         </TouchableOpacity>
       </View>
     </View>
