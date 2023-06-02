@@ -306,20 +306,20 @@ def addreport(request):
         jsond = json.loads(request.body)
         action = jsond.get('action', 'nokey')
         userid = jsond.get('userid', 'nokey')
-        date = jsond.get('regdate', 'nokey')
+        regdate = jsond.get('regdate', 'nokey')
         report = jsond.get('report', 'nokey')
 
         try:
             cursor.execute(
-                f"""SELECT * FROM public.t_report WHERE regdate ='{date}' AND userid = {userid}""")
+                f"""SELECT * FROM public.t_report WHERE regdate ='{regdate}' AND userid = {userid}""")
             columns = cursor.description
             respRow = [{columns[index][0]:column for index, column in enumerate(
                 value)} for value in cursor.fetchall()]
             if len(respRow) == 0:
                 cursor.execute("""
                     INSERT INTO t_report (repid, report, regdate, userid)
-                    VALUES (DEFAULT, %s, NOW(), %s);
-                """, [report, userid])
+                    VALUES (DEFAULT, %s, %s, %s);
+                """, [report,regdate, userid])
                 con.commit()
                 resp = sendResponse(200, "Амжилттай", "", action)
                 return HttpResponse(resp)
@@ -328,7 +328,7 @@ def addreport(request):
                     UPDATE public.t_report
 	                SET report=%s, regdate=NOW()
 	                WHERE regdate = %s AND userid = %s;
-                """, [report, date, userid])
+                """, [report, regdate, userid])
                 con.commit()
                 resp = sendResponse(200, "Амжилттай", "", action)
                 return HttpResponse(resp)
