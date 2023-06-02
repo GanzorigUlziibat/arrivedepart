@@ -18,7 +18,11 @@ function App() {
           options={{ title: "Цаг бүртгэл", headerBackVisible: false }}
           component={HomeScreen}
         />
-        <Stack.Screen name="Arrlist" component={ArrlistScreen} />
+        <Stack.Screen
+          name="Arrlist"
+          options={{ title: "ДЭЛГЭРЭНГҮЙ" }}
+          component={ArrlistScreen}
+        />
         <Stack.Screen name="Desc" component={DescScreen} />
         <Stack.Screen
           name="Register"

@@ -23,9 +23,9 @@ export default function App({ navigation }) {
   const [displayText, setDisplayText] = useState("Цагаа бүртгүүлнэ үү");
   const [currentLocation, setCurrentLocation] = useState(null);
   const [detail, setDetail] = useState({});
-  const [userid1, setUserid1] = useState();
+  const [userid1, setUserid1] = useState(1);
 
-  
+  const officeLocation = { latitude: 47.9203302, longitude: 106.8832056 }; // Replace with your office location coordinates
 
   useEffect(() => {
     let useridvalue;
@@ -34,15 +34,16 @@ export default function App({ navigation }) {
       if (useridvalue == null) {
         navigation.navigate("Register");
       } else {
-        console.log(useridvalue, "val");
+        // console.log(useridvalue, "val");
         setUserid1(useridvalue);
-        console.log(userid1, "id");
+        // console.log(userid1, "id");
       }
     }
 
     fetchData();
     getLocation();
   }, []);
+
   useEffect(() => {
     const getUsersData = {
       action: "getuser",
@@ -54,26 +55,12 @@ export default function App({ navigation }) {
           urlArriveService + "getuser",
           getUsersData
         );
-        console.log(response);
+        // console.log(response);
         if (response.resultCode == 200) {
           setDetail(response.data[0]);
         } else {
           alert(data && data.resultMessage);
         }
-        //   .then((data) => {
-        //     // setIsLoading(false);
-        //     // setDatas(data);
-        //     // console.log(data && data, "datas");
-        //     if (data && data.resultCode == 200) {
-        //       data && setDetail(data.data[0]);
-        //     } else {
-        //       alert(data && data.resultMessage);
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     // setIsLoading(false);
-        //     console.error(error);
-        //   });
       } catch (error) {
         console.warn(error);
       }
@@ -103,51 +90,50 @@ export default function App({ navigation }) {
       userid: userid,
       codearr: codearr,
     };
-
-    sendRequest(urlArriveService + "arrdep", arrdepData)
-      .then((data) => {
-        // setIsLoading(false);
-        // setDatas(data);
-        if (data.resultCode == 200) {
-          // navigation.navigate("Home", { detail: data.data });
-          // console.log(data.data[0].userid);
-          _storeData("userid", data.data[0].userid);
+    const fetchData = async () => {
+      try {
+        const response = await sendRequest(
+          urlArriveService + "arrdep",
+          arrdepData
+        );
+        // console.log(response);
+        if (response.resultCode == 200) {
+          console.log(response && response.resultMessage);
         } else {
-          alert(data.resultMessage);
+          alert(response && response.resultMessage);
         }
-      })
-      .catch((error) => {
-        // setIsLoading(false);
-        console.error(error);
-      });
+      } catch (error) {
+        console.warn(error);
+      }
+    };
+    fetchData();
   };
 
   const handleButtonPress = (text) => {
     if (currentLocation) {
-      const officeLocation = { latitude: 47.9203302, longitude: 106.8832056 }; // Replace with your office location coordinates
       const distance = geolib.getDistance(
         currentLocation.coords,
-        officeLocation,
-      console.log(currentLocation.coords, "online"),
-      console.log(officeLocation, "off"),
+        officeLocation
       );
-      if (distance <= 50) {
+      //   console.log(currentLocation.coords, "Current location");
+      //   console.log(officeLocation, "office location");
+
+      if (distance <= 50000000000000000) {
+        // if (distance <= 50) {
         if (text === "Arrive") {
-          insertArriveDepart(detail.userid, 1)
+          insertArriveDepart(detail.userid, 1);
           setDisplayText("Тавтай морил");
         } else if (text === "Depart") {
-          insertArriveDepart(detail.userid, 2)
+          insertArriveDepart(detail.userid, 2);
           setDisplayText("Баяртай");
-        } else if (text === "Button 3");
+        }
       } else {
-        setDisplayText("Та энд байхгүй байна");
-        alert(distance + " m");
+        setDisplayText("Та ажил дээрээ байхгүй байна");
+        alert(distance + " метр");
       }
     } else {
       setDisplayText("Цагаа бүртгүүлнэ үү");
-
     }
-    App({navigation})
   };
 
   async function removeAsyncStorage() {
@@ -174,7 +160,7 @@ export default function App({ navigation }) {
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate("Arrlist")}
+          onPress={() => navigation.navigate("Arrlist", { userid: userid1 })}
         >
           <Text style={styles.buttonText}>Ирц харах</Text>
         </Pressable>

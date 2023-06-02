@@ -356,7 +356,7 @@ def reportlist(request):
     con = connect()
     cursor = con.cursor()
     cursor.execute(
-        f"""SELECT * FROM public.t_report WHERE repdate ={date}  AND userid = {userid}""")
+        f"""SELECT * FROM public.t_report WHERE (date '{date}' + time '00:00:00.0000')  <= regdate AND  regdate <= (date '{date}' + time '23:59:59.99999')  AND userid = {userid}""")
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
