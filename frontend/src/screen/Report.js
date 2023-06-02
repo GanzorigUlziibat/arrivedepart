@@ -50,6 +50,35 @@ const AcceptCancelBox = ({ route, navigation }) => {
 
   const handleAccept = () => {
     console.log("Accepted:", text);
+
+    const fetchData = async () => {
+      const listData = {
+        action: "addreport",
+        userid: userid,
+        regdate: regdate,
+        report: text,
+      };
+      console.log(listData, "listData");
+      try {
+        const response = await sendRequest(
+          urlArriveService + "addreport",
+          listData
+        );
+
+        if (response.resultCode == 200) {
+          // setDetail(response.data);
+          // setText(response.data[0].report);
+          // console.log(detail);
+          alert("Тайлан Бүртгэлээ", text);
+        } else {
+          alert(response && response.resultMessage);
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    };
+    fetchData();
+
     // Perform accept logic here
   };
 
