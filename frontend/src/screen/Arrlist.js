@@ -9,7 +9,6 @@ import {
   Animated,
   Pressable,
 } from "react-native";
-import axios from "axios";
 import { Table, Row, Rows } from "react-native-table-component";
 import { AntDesign } from "@expo/vector-icons";
 import {

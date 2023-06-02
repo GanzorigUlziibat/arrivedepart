@@ -13,8 +13,6 @@ import {
   StatusBar,
 } from "react-native";
 // import { useNavigation } from "@react-navigation/native";
-
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   sendRequest,
@@ -32,10 +30,13 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     async function fetchData() {
       const userid = await _retrieveData("userid");
+      // AsyncStorage.getItem("userid").then((value) => {
       if (userid != null) {
-        navigation.navigate("Home");
+        navigation.navigate("Home", { userid: userid });
       }
+      // console.log(value, "asyncstorge");
     }
+
     fetchData();
   }, []);
 
@@ -56,7 +57,15 @@ const LoginScreen = ({ navigation }) => {
       // navigation.navigate("Home", { detail: data.data });
       // console.log(data.data[0].userid);
       _storeData("userid", response.data[0].userid);
-      navigation.navigate("Home", { userid: response.data[0].userid });
+
+      const value = await _retrieveData("userid");
+      navigation.navigate("Home", { userid: value });
+      // AsyncStorage.getItem("userid").then((value) =>
+      //   // navigation.navigate("Home", { userid: value })
+      //   console.log(value, "asyncs")
+      // );
+
+      // alert(await _retrieveData("userid"));
     } else {
       alert(response.resultMessage);
     }

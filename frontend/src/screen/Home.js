@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import * as Location from "expo-location";
 import * as geolib from "geolib";
@@ -22,6 +23,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function App({ route, navigation }) {
   const { userid } = route.params;
   //   let userid = 30;
+
+  //   let userid;
+
+  //   useEffect(() => {
+  //     async function fetchData() {
+  //       const userid = await _retrieveData("userid");
+  //       if (userid == null) {
+  //         navigation.navigate("Register");
+  //       }
+  //     }
+
+  //     fetchData();
+  //   });
+
   const [displayText, setDisplayText] = useState("Цагаа бүртгүүлнэ үү");
   const [currentLocation, setCurrentLocation] = useState(null);
   const [detail, setDetail] = useState({});
@@ -150,18 +165,18 @@ export default function App({ route, navigation }) {
       <Text style={styles.text}>{displayText}</Text>
       <View style={styles.buttonContainer}>
         <Text>Тавтай Морил {detail.firstname}!</Text>
-        <Pressable
+        <TouchableOpacity
           style={styles.button}
           onPress={() => handleButtonPress("Arrive")}
         >
           <Text style={styles.buttonText}>Ирсэн</Text>
-        </Pressable>
-        <Pressable
+        </TouchableOpacity>
+        <TouchableOpacity
           style={styles.button}
           onPress={() => handleButtonPress("Depart")}
         >
           <Text style={styles.buttonText}>Явсан</Text>
-        </Pressable>
+        </TouchableOpacity>
         <Pressable
           style={styles.button}
           onPress={() => navigation.navigate("Arrlist", { userid: userid })}
