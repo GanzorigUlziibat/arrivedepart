@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -55,7 +55,7 @@ const AcceptCancelBox = ({ route, navigation }) => {
       <TextInput
         multiline={true}
         style={styles.input}
-        value={detail.data[0].}
+        value={detail.data[0].report}
         onChangeText={setText}
       />
       <View style={styles.buttonContainer}>
