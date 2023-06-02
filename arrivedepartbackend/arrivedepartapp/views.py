@@ -270,6 +270,7 @@ def arrlist(request):
     cursor = con.cursor()
     cursor.execute(f"""SELECT 
                     COALESCE(a1.regdate, a2.regdate) regdate
+                    , MIN(userid) as userid
                     --, a1.irsentsag
                     --, a2.yavsantsag
                     , EXTRACT(HOUR FROM a1.irsentsag) || ':' || EXTRACT(MINUTE FROM a1.irsentsag) AS irsentsag
