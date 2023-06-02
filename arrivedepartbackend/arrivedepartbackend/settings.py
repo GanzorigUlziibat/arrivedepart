@@ -139,10 +139,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-def sendResponse(resultCode, resultMessege, data, action):
+def sendResponse(resultCode, resultMessage, data, action):
     resp = {}
     resp["resultCode"] = resultCode
-    resp["resultMessage"] = resultMessege
+    resp["resultMessage"] = resultMessage
     resp["data"] = data
     resp["size"] = len(data)
     resp["action"] = action
