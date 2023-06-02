@@ -123,8 +123,10 @@ export default function App({ navigation }) {
         if (text === "Arrive") {
           insertArriveDepart(detail.userid, 1);
           setDisplayText("Тавтай морил");
+          alert("Ажилдаа ирсэн танд баярлалаа");
         } else if (text === "Depart") {
           insertArriveDepart(detail.userid, 2);
+          alert("Бүртгэгдлээ. Баяртай");
           setDisplayText("Баяртай");
         }
       } else {
