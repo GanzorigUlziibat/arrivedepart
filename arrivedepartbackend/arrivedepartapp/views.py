@@ -306,7 +306,7 @@ def addreport(request):
         jsond = json.loads(request.body)
         action = jsond.get('action', 'nokey')
         userid = jsond.get('userid', 'nokey')
-        date = jsond.get('date', 'nokey')
+        date = jsond.get('regdate', 'nokey')
         report = jsond.get('report', 'nokey')
 
         try:
@@ -352,7 +352,7 @@ def reportlist(request):
     jsond = json.loads(request.body)
     action = jsond.get('action', 'nokey')
     userid = jsond.get('userid', 'nokey')
-    date = jsond.get('date', 'nokey')
+    date = jsond.get('regdate', 'nokey')
     con = connect()
     cursor = con.cursor()
     tsql = f"""SELECT * FROM public.t_report WHERE (date '{date}' + time '00:00:00.0000')  <= regdate AND  regdate <= (date '{date}' + time '23:59:59.99999')  AND userid = {userid}"""
