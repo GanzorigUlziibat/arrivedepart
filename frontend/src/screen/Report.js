@@ -55,7 +55,8 @@ const AcceptCancelBox = ({ route, navigation }) => {
       <TextInput
         multiline={true}
         style={styles.input}
-        value={detail.data[0].report}
+        // value={detail.data[0].report}
+        value={text}
         onChangeText={setText}
       />
       <View style={styles.buttonContainer}>
