@@ -312,13 +312,13 @@ def addreport(request):
 
         try:
             cursor.execute(
-                f"""SELECT * FROM public.t_report WHERE repdate ={date} AND userid = {userid}""")
+                f"""SELECT * FROM public.t_report WHERE regdate ='{date}' AND userid = {userid}""")
             columns = cursor.description
             respRow = [{columns[index][0]:column for index, column in enumerate(
                 value)} for value in cursor.fetchall()]
             if len(respRow) == 0:
                 cursor.execute("""
-                    INSERT INTO t_report (repid, report, repdate, userid)
+                    INSERT INTO t_report (repid, report, regdate, userid)
                     VALUES (DEFAULT, %s, NOW(), %s);
                 """, [report, userid])
                 con.commit()
@@ -327,8 +327,8 @@ def addreport(request):
             else:
                 cursor.execute("""
                     UPDATE public.t_report
-	                SET report=%s, repdate=NOW()
-	                WHERE repdate = %s AND userid = %s;
+	                SET report=%s, regdate=NOW()
+	                WHERE regdate = %s AND userid = %s;
                 """, [report, date, userid])
                 con.commit()
                 resp = sendResponse(200, "Амжилттай", "", action)
@@ -356,7 +356,7 @@ def reportlist(request):
     date = jsond.get('date', 'nokey')
     con = connect()
     cursor = con.cursor()
-    tsql = f"""SELECT * FROM public.t_report WHERE (date {date} + time '00:00:00.0000')  <= regdate AND  regdate <= (date {date} + time '23:59:59.99999')  AND userid = {userid}"""
+    tsql = f"""SELECT * FROM public.t_report WHERE (date '{date}' + time '00:00:00.0000')  <= regdate AND  regdate <= (date '{date}' + time '23:59:59.99999')  AND userid = {userid}"""
     cursor.execute(tsql)
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
