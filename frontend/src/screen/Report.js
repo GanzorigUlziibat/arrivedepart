@@ -1,55 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import {
-  sendRequest,
-  urlArriveService,
-  _storeData,
-  _retrieveData,
-} from "../Methods";
+
 const AcceptCancelBox = ({ route,  navigation}) => {
   const { regdate } = route.params;
-  const [detail, setDetail] = useState([]);
-  const [text, setText] = useState('');
-  useEffect(async () => {
-    // let useridvalue = await _retrieveData("userid");
-    // if (useridvalue == null) {
-    //   navigation.navigate("Login");
-    // } else {
-    //   // console.log(useridvalue, "val");
-    //   setUserid1(useridvalue);
-    //   // console.log(userid1, "id");
-    // }
-    const reportListData = {
-      action: "reportlist",
-      // userid: useridvalue,
-      userid: 1,
-      date : JSON.stringify(regdate)
-    };
-    console.log(reportListData, "reportlist")
-    sendRequest(urlArriveService + "reportlist", reportListData)
-      .then((data) => {
-        // setIsLoading(false);
-        // setDatas(data);
-        // console.log(data);
-        console.log(JSON.stringify(data), "arrlist");
-        // if (data.resultCode == 200)
-        // {
-        //   data && setDetail(data.data);
-        //   console.log(detail,'detail');
-        // }
-        // else
-        // {
-        //   alert(data.resultMessage);
-        // }
-      })
-      .catch((error) => {
-        // setIsLoading(false);
-        console.error(error);
-      });
-
-    getLocation();
-  },[]);
   
+  const [text, setText] = useState('');
+
   const handleAccept = () => {
     console.log('Accepted:', text);
     // Perform accept logic here
@@ -60,12 +16,10 @@ const AcceptCancelBox = ({ route,  navigation}) => {
     navigation.goBack();
     // Perform cancel logic here
   };
-  
-  
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{regdate}{detail} өдрийн тайлан:</Text>
+      <Text style={styles.label}>{regdate} өдрийн тайлан:</Text>
       <TextInput
         multiline={true}
         style={styles.input}

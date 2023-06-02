@@ -18,6 +18,8 @@ export default function App({ navigation }) {
   const [userid1, setUserid1] = useState();
   let useridvalue;
 
+  
+
   useEffect(() => {
     let useridvalue;
     async function fetchData() {
@@ -27,7 +29,7 @@ export default function App({ navigation }) {
       } else {
         console.log(useridvalue, "val");
         setUserid1(useridvalue);
-        // console.log(userid1, "id");
+        console.log(userid1, "id");
       }
     }
 
@@ -76,8 +78,8 @@ export default function App({ navigation }) {
   const insertArriveDepart = (userid, codearr) => {
     const arrdepData = {
       action: "arrdep",
-      userid: 1,
-      codearr: 2,
+      userid: userid,
+      codearr: codearr,
     };
 
     sendRequest(urlArriveService + "arrdep", arrdepData)
@@ -100,17 +102,19 @@ export default function App({ navigation }) {
 
   const handleButtonPress = (text) => {
     if (currentLocation) {
-      const officeLocation = { latitude: 47.927613, longitude: 106.889048 }; // Replace with your office location coordinates
+      const officeLocation = { latitude: 47.9203302, longitude: 106.8832056 }; // Replace with your office location coordinates
       const distance = geolib.getDistance(
         currentLocation.coords,
-        officeLocation
+        officeLocation,
+      console.log(currentLocation.coords, "online"),
+      console.log(officeLocation, "off"),
       );
       if (distance <= 50) {
         if (text === "Arrive") {
-          alert(distance + " m");
+          insertArriveDepart(detail.userid, 1)
           setDisplayText("Тавтай морил");
         } else if (text === "Depart") {
-          alert(distance + " m");
+          insertArriveDepart(detail.userid, 2)
           setDisplayText("Баяртай");
         } else if (text === "Button 3");
       } else {
@@ -119,7 +123,9 @@ export default function App({ navigation }) {
       }
     } else {
       setDisplayText("Цагаа бүртгүүлнэ үү");
+
     }
+    App({navigation})
   };
 
   return (
