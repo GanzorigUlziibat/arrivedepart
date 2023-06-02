@@ -355,12 +355,12 @@ def reportlist(request):
     date = jsond.get('date', 'nokey')
     con = connect()
     cursor = con.cursor()
-    cursor.execute(
-        f"""SELECT * FROM public.t_report WHERE (date {date} + time '00:00:00.0000')  <= regdate AND  regdate <= (date {date} + time '23:59:59.99999')  AND userid = {userid}""")
+    tsql = f"""SELECT * FROM public.t_report WHERE (date {date} + time '00:00:00.0000')  <= regdate AND  regdate <= (date {date} + time '23:59:59.99999')  AND userid = {userid}"""
+    cursor.execute(tsql)
     columns = cursor.description
     respRow = [{columns[index][0]:column for index,
                 column in enumerate(value)} for value in cursor.fetchall()]
-    resp = {'resultcode': 200, 'resultmessage': 'success',
+    resp = {'resultcode': 200, 'resultmessage': tsql,
             'data': respRow, 'size': len(respRow), 'action': action}
     # times = resp['data'][0]['irsentsag']
     # print(times.strftime("%m/%d/%Y, %H:%M:%S"))
