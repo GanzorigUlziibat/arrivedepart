@@ -69,7 +69,7 @@ const AcceptCancelBox = ({ route, navigation }) => {
           // setDetail(response.data);
           // setText(response.data[0].report);
           // console.log(detail);
-          alert("Тайлан Бүртгэлээ", text);
+          alert("Өдрийн тайлангаа илгээсэн танд баярлалаа", text);
         } else {
           alert(response && response.resultMessage);
         }

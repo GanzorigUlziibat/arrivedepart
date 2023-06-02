@@ -7,10 +7,10 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import * as Location from "expo-location";
 import * as geolib from "geolib";
-import { useNavigation } from "@react-navigation/native";
 
 import {
   sendRequest,
@@ -22,20 +22,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App({ route, navigation }) {
   const { userid } = route.params;
-  //   let userid = 30;
-
-  //   let userid;
-
-  //   useEffect(() => {
-  //     async function fetchData() {
-  //       const userid = await _retrieveData("userid");
-  //       if (userid == null) {
-  //         navigation.navigate("Register");
-  //       }
-  //     }
-
-  //     fetchData();
-  //   });
 
   const [displayText, setDisplayText] = useState("Цагаа бүртгүүлнэ үү");
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -45,19 +31,6 @@ export default function App({ route, navigation }) {
   const officeLocation = { latitude: 47.927595, longitude: 106.889073 }; // Replace with your office location coordinates
 
   useEffect(() => {
-    let useridvalue;
-    // async function fetchData() {
-    //   useridvalue = await _retrieveData("userid");
-    //   if (useridvalue == null) {
-    //     navigation.navigate("Register");
-    //   } else {
-    //     // console.log(useridvalue, "val");
-    //     setUserid1(useridvalue);
-    //     // console.log(userid1, "id");
-    //   }
-    // }
-
-    // fetchData();
     getLocation();
   }, []);
 
@@ -143,12 +116,16 @@ export default function App({ route, navigation }) {
           alert("Ажилдаа ирсэн танд баярлалаа");
         } else if (text === "Depart") {
           insertArriveDepart(detail.userid, 2);
-          alert("Бүртгэгдлээ. Баяртай");
+          alert("Бүртгэлээ. Баяртай");
           setDisplayText("Баяртай");
         }
       } else {
         setDisplayText("Та ажил дээрээ байхгүй байна");
-        alert("Та ажил дээрээ байхгүй байна" + distance + " метр");
+        alert(
+          "Та ажил дээрээ байхгүй байна. Та ажлаасаа " +
+            distance +
+            " метр зайд байна."
+        );
       }
     } else {
       setDisplayText("Цагаа бүртгүүлнэ үү");
@@ -164,7 +141,9 @@ export default function App({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>{displayText}</Text>
       <View style={styles.buttonContainer}>
-        <Text>Тавтай Морил {detail.firstname}!</Text>
+        <Text>
+          Тавтай Морил {detail.lastname}. {detail.firstname}!
+        </Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => handleButtonPress("Arrive")}
