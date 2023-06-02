@@ -1,4 +1,4 @@
-from arrivedepartbackend.arrivedepartbackend.settings import sendResponse
+
 from django.shortcuts import render
 from django.http import HttpResponse
 import psycopg2
