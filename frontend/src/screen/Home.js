@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, Pressable, SafeAreaView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Button,
+} from "react-native";
 import * as Location from "expo-location";
 import * as geolib from "geolib";
 import { useNavigation } from "@react-navigation/native";
@@ -10,13 +17,13 @@ import {
   _storeData,
   _retrieveData,
 } from "../Methods";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App({ navigation }) {
   const [displayText, setDisplayText] = useState("Цагаа бүртгүүлнэ үү");
   const [currentLocation, setCurrentLocation] = useState(null);
   const [detail, setDetail] = useState({});
   const [userid1, setUserid1] = useState();
-  let useridvalue;
 
   
 
@@ -25,7 +32,7 @@ export default function App({ navigation }) {
     async function fetchData() {
       useridvalue = await _retrieveData("userid");
       if (useridvalue == null) {
-        navigation.navigate("Login");
+        navigation.navigate("Register");
       } else {
         console.log(useridvalue, "val");
         setUserid1(useridvalue);
@@ -36,28 +43,43 @@ export default function App({ navigation }) {
     fetchData();
     getLocation();
   }, []);
-
   useEffect(() => {
     const getUsersData = {
       action: "getuser",
       userid: userid1,
     };
-
-    sendRequest(urlArriveService + "getuser", getUsersData)
-      .then((data) => {
-        // setIsLoading(false);
-        // setDatas(data);
-        console.log(data, "datas");
-        if (data.resultCode == 200) {
-          setDetail(data.data[0]);
+    const fetchData = async () => {
+      try {
+        const response = await sendRequest(
+          urlArriveService + "getuser",
+          getUsersData
+        );
+        console.log(response);
+        if (response.resultCode == 200) {
+          setDetail(response.data[0]);
         } else {
-          alert(data.resultMessage);
+          alert(data && data.resultMessage);
         }
-      })
-      .catch((error) => {
-        // setIsLoading(false);
-        console.error(error);
-      });
+        //   .then((data) => {
+        //     // setIsLoading(false);
+        //     // setDatas(data);
+        //     // console.log(data && data, "datas");
+        //     if (data && data.resultCode == 200) {
+        //       data && setDetail(data.data[0]);
+        //     } else {
+        //       alert(data && data.resultMessage);
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     // setIsLoading(false);
+        //     console.error(error);
+        //   });
+      } catch (error) {
+        console.warn(error);
+      }
+    };
+
+    fetchData();
   }, [userid1]);
 
   const getLocation = async () => {
@@ -128,6 +150,11 @@ export default function App({ navigation }) {
     App({navigation})
   };
 
+  async function removeAsyncStorage() {
+    await AsyncStorage.removeItem("userid");
+    navigation.navigate("Register");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>{displayText}</Text>
@@ -151,6 +178,10 @@ export default function App({ navigation }) {
         >
           <Text style={styles.buttonText}>Ирц харах</Text>
         </Pressable>
+        <Button
+          title="remove AsyncStorage"
+          onPress={() => removeAsyncStorage()}
+        ></Button>
       </View>
     </SafeAreaView>
   );

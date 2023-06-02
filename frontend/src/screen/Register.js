@@ -29,20 +29,19 @@ const LoginScreen = ({ navigation }) => {
   // const [isLoading, setIsLoading] = useState(false);
   // const navigation = useNavigation();
 
-  async function fetchData() {
-    const userid = await _retrieveData("userid");
-    if (userid != null) {
-      navigation.navigate("Home");
-    }
-  }
-
   useEffect(() => {
+    async function fetchData() {
+      const userid = await _retrieveData("userid");
+      if (userid != null) {
+        navigation.navigate("Home");
+      }
+    }
     fetchData();
   }, []);
 
   // Persisting data:
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const loginData = {
       action: "login",
       username: username,
@@ -51,22 +50,16 @@ const LoginScreen = ({ navigation }) => {
 
     // console.log(loginData);
 
-    sendRequest(urlArriveService + "login", loginData)
-      .then((data) => {
-        // console.log(1);
-        // setIsLoading(false);
-        if (data.resultCode == 200) {
-          // navigation.navigate("Home", { detail: data.data });
-          console.log(data.data[0].userid);
-          _storeData("userid", data.data[0].userid);
-        } else {
-          alert(data.resultMessage);
-        }
-      })
-      .catch((error) => {
-        // setIsLoading(false);
-        console.error(error);
-      });
+    const response = await sendRequest(urlArriveService + "login", loginData);
+
+    if (response.resultCode == 200) {
+      // navigation.navigate("Home", { detail: data.data });
+      // console.log(data.data[0].userid);
+      _storeData("userid", response.data[0].userid);
+      navigation.navigate("Home");
+    } else {
+      alert(response.resultMessage);
+    }
   };
 
   return (
